@@ -1,0 +1,12 @@
+{
+  "name": "biblia_ios",
+  "displayName": "biblia_ios",
+  "expo": {
+    "name": "biblia_ios",
+    "slug": "biblia_ios",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
