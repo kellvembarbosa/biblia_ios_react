@@ -5,13 +5,18 @@ import Routers from './routers';
 import { ThemeProvider } from "styled-components/native";
 import { darkTheme } from './styles/theme';
 import { StatusBar } from 'expo-status-bar';
+import { RecoilRoot } from 'recoil';
 
 export default function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <NavigationContainer>
-        <Routers />
-      </NavigationContainer>
-    </ThemeProvider>
+
+    <RecoilRoot>
+      <ThemeProvider theme={darkTheme}>
+        <NavigationContainer>
+          <Routers />
+        </NavigationContainer>
+      </ThemeProvider>
+    </RecoilRoot>
+
   );
 }

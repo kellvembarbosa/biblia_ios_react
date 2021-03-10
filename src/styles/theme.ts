@@ -10,8 +10,10 @@ declare module "styled-components" {
         cardColor: string;
         colorText: string;
         tabBarOptions: {
-            activeBackgroundColor: string;
-            inactiveBackgroundColor: string;
+            // activeBackgroundColor: string;
+            // inactiveBackgroundColor: string;
+
+            opacity: number;
 
             activeTintColor: string;
             inactiveTintColor: string;
@@ -43,10 +45,11 @@ export const lightTheme: DefaultTheme = {
     colorText: "#222",
 
     tabBarOptions: {
-        activeBackgroundColor: "#fff",
-        inactiveBackgroundColor: "#fff",
+        // activeBackgroundColor: "#fff",
+        // inactiveBackgroundColor: "#fff",
         activeTintColor: "#fff",
         inactiveTintColor: "#cacaca",
+        opacity: 0.5,
         style: {
             backgroundColor: '#000',
             borderTopWidth: 0,
@@ -63,7 +66,7 @@ export const lightTheme: DefaultTheme = {
 };
 
 export const darkTheme: DefaultTheme = {
-    isDarkTheme: false,
+    isDarkTheme: true,
     primaryColor: "#F79C4D",
     secondaryColor: "#E46B10",
 
@@ -73,10 +76,11 @@ export const darkTheme: DefaultTheme = {
     colorText: "#fff",
 
     tabBarOptions: {
-        activeBackgroundColor: "#000",
-        inactiveBackgroundColor: "#000",
+        // activeBackgroundColor: "#000",
+        // inactiveBackgroundColor: "#000",
         activeTintColor: "#F79C4D",
         inactiveTintColor: "#fff",
+        opacity: 0.2,
         style: {
             backgroundColor: '#000',
             borderTopWidth: 0,

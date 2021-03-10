@@ -8,7 +8,19 @@ import { useTheme } from 'styled-components/native'
 import { StatusBar } from 'expo-status-bar'
 
 const HomeScreen = () => {
-    const theme = useTheme();
+    const { colorText,
+        isDarkTheme,
+        colorSocial: {
+            colorWhatsApp,
+            colorTelegram,
+            colorFacebook,
+            colorInstagram
+        }
+    } = useTheme();
+
+    React.useEffect(() => {
+        console.log("HomeScreen")
+    }, [])
 
     const renderItem = ({ item }: any) => {
         return (
@@ -19,24 +31,25 @@ const HomeScreen = () => {
                         {item.versiculoInfo}
                     </VersiculoInfo>
 
-                    <View style={{ flexDirection: 'row', marginTop: 12 }}>
-                        <SocialCircle color={theme.colorSocial.colorTelegram}>
-                            <FontAwesome name="telegram" size={18} color={theme.colorText} />
+                    <View style={{ flexDirection: 'row', marginTop: 6 }}>
+                        <SocialCircle color={colorTelegram}>
+                            <FontAwesome name="telegram" size={18} color={colorText} />
                         </SocialCircle>
-                        <SocialCircle color={theme.colorSocial.colorWhatsApp}>
-                            <FontAwesome name="whatsapp" size={18} color={theme.colorText} />
+                        <SocialCircle color={colorWhatsApp}>
+                            <FontAwesome name="whatsapp" size={18} color={colorText} />
                         </SocialCircle>
-                        <SocialCircle color={theme.colorSocial.colorFacebook}>
-                            <FontAwesome name="facebook" size={18} color={theme.colorText} />
+                        <SocialCircle color={colorFacebook}>
+                            <FontAwesome name="facebook" size={18} color={colorText} />
                         </SocialCircle>
-                        <SocialCircle color={theme.colorSocial.colorInstagram}>
-                            <FontAwesome name="instagram" size={18} color={theme.colorText} />
+                        <SocialCircle color={colorInstagram}>
+                            <FontAwesome name="instagram" size={18} color={colorText} />
                         </SocialCircle>
                     </View>
                 </Actions>
             </CardVersiculo>
         )
     }
+
     return (
         <SafeContainer>
             <Container>
@@ -46,7 +59,7 @@ const HomeScreen = () => {
                     renderItem={renderItem}
                     keyExtractor={item => item.id} />
 
-                <StatusBar style={theme.isDarkTheme ? "light" : "dark"} />
+                <StatusBar style={isDarkTheme ? "light" : "dark"} />
             </Container>
         </SafeContainer>
     )

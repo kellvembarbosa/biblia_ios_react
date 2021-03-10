@@ -1,5 +1,5 @@
 import { ViewProps } from 'react-native';
-import { ISocialicons } from 'src/data/types';
+import { ISocialicons } from 'src/interfaces/types';
 import styled from 'styled-components/native';
 
 export const CardVersiculo = styled.View`

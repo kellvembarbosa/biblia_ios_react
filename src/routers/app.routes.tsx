@@ -7,6 +7,9 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components/native';
 import BibliaScreen from '../screens/app/BibliaScreen'
 import ProfileScreen from '../screens/app/ProfileScreen'
+import BottomSheet from 'reanimated-bottom-sheet';
+import { useRecoilValue } from 'recoil';
+import { contentBottomSheetState, snapPointsState } from '../recoils/atoms';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -16,7 +19,6 @@ function AppRoutes() {
 
     const BottomNav = () => (
         <Tab.Navigator
-
             tabBarOptions={theme.tabBarOptions}
             initialRouteName="Home" >
 
@@ -26,7 +28,7 @@ function AppRoutes() {
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color }) => (
-                        <FontAwesome name="list" size={24} color={color} />
+                        <FontAwesome name="list" size={22} color={color} />
                     ),
                 }}
             />
@@ -35,9 +37,9 @@ function AppRoutes() {
                 name="Biblia"
                 component={BibliaScreen}
                 options={{
-                    tabBarLabel: 'Home',
+                    tabBarLabel: 'Bíblia',
                     tabBarIcon: ({ color }) => (
-                        <MaterialIcons name="menu-book" size={24} color={color} />
+                        <MaterialIcons name="menu-book" size={25} color={color} />
                     ),
                 }}
             />
