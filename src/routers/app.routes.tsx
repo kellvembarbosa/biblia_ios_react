@@ -7,9 +7,7 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components/native';
 import BibliaScreen from '../screens/app/BibliaScreen'
 import ProfileScreen from '../screens/app/ProfileScreen'
-import BottomSheet from 'reanimated-bottom-sheet';
-import { useRecoilValue } from 'recoil';
-import { contentBottomSheetState, snapPointsState } from '../recoils/atoms';
+import { StatusBar } from 'expo-status-bar';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -58,7 +56,11 @@ function AppRoutes() {
     )
 
     return (
-        <BottomNav />
+        <>
+            <BottomNav />
+
+            <StatusBar style={theme.isDarkTheme ? "light" : "dark"} />
+        </>
         // <Stack.Navigator
         //     screenOptions={{
         //         headerTintColor: 'white',

@@ -13,10 +13,3 @@ export interface ISelectedButton {
 export interface IBottomSheetProvider {
     children: React.ReactNode;
 }
-
-export interface IBottomSheetContext {
-    // bottomSheetShow: Function;
-    // contentBottomSheet: React.ReactNode;
-    // snapPoints: number[];
-    sheetRef: any;
-}

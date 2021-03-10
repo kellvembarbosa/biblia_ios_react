@@ -26,6 +26,7 @@ declare module "styled-components" {
         },
 
         colorSocial: {
+            colorIcons: string;
             colorWhatsApp: string;
             colorFacebook: string;
             colorInstagram: string;
@@ -36,28 +37,29 @@ declare module "styled-components" {
 
 export const lightTheme: DefaultTheme = {
     isDarkTheme: false,
-    primaryColor: "#fff",
-    secondaryColor: "#cacaca",
+    primaryColor: "#F79C4D",
+    secondaryColor: "#E46B10",
 
-    backgroundColor: "#fff",
-    cardColor: "#e3e3e3",
+    backgroundColor: "#f3f3f3",
+    cardColor: "#fff",
 
     colorText: "#222",
 
     tabBarOptions: {
         // activeBackgroundColor: "#fff",
         // inactiveBackgroundColor: "#fff",
-        activeTintColor: "#fff",
-        inactiveTintColor: "#cacaca",
+        activeTintColor: "#F79C4D",
+        inactiveTintColor: "#333",
         opacity: 0.5,
         style: {
-            backgroundColor: '#000',
+            backgroundColor: '#f3f3f3',
             borderTopWidth: 0,
             borderTopColor: '#D3D3D3',
         }
     },
 
     colorSocial: {
+        colorIcons: "#fff",
         colorWhatsApp: "#00af4b",
         colorFacebook: "#4d7dcf",
         colorInstagram: "#d13418",
@@ -89,6 +91,7 @@ export const darkTheme: DefaultTheme = {
     },
 
     colorSocial: {
+        colorIcons: "#fff",
         colorWhatsApp: "#25d366",
         colorFacebook: "#1877f2",
         colorInstagram: "#c32aa3",

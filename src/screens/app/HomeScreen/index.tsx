@@ -11,6 +11,7 @@ const HomeScreen = () => {
     const { colorText,
         isDarkTheme,
         colorSocial: {
+            colorIcons,
             colorWhatsApp,
             colorTelegram,
             colorFacebook,
@@ -33,16 +34,16 @@ const HomeScreen = () => {
 
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
                         <SocialCircle color={colorTelegram}>
-                            <FontAwesome name="telegram" size={18} color={colorText} />
+                            <FontAwesome name="telegram" size={18} color={colorIcons} />
                         </SocialCircle>
                         <SocialCircle color={colorWhatsApp}>
-                            <FontAwesome name="whatsapp" size={18} color={colorText} />
+                            <FontAwesome name="whatsapp" size={18} color={colorIcons} />
                         </SocialCircle>
                         <SocialCircle color={colorFacebook}>
-                            <FontAwesome name="facebook" size={18} color={colorText} />
+                            <FontAwesome name="facebook" size={18} color={colorIcons} />
                         </SocialCircle>
                         <SocialCircle color={colorInstagram}>
-                            <FontAwesome name="instagram" size={18} color={colorText} />
+                            <FontAwesome name="instagram" size={18} color={colorIcons} />
                         </SocialCircle>
                     </View>
                 </Actions>
@@ -58,8 +59,6 @@ const HomeScreen = () => {
                     data={versiculosFake}
                     renderItem={renderItem}
                     keyExtractor={item => item.id} />
-
-                <StatusBar style={isDarkTheme ? "light" : "dark"} />
             </Container>
         </SafeContainer>
     )
