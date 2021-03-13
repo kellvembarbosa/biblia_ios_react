@@ -13,3 +13,28 @@ export interface ISelectedButton {
 export interface IBottomSheetProvider {
     children: React.ReactNode;
 }
+
+export interface IContainerBottomSheet {
+    height: string;
+}
+
+export interface INumberVerse {
+    isFirst?: boolean;
+}
+
+export interface VerseProps {
+    item: any;
+    index: number;
+}
+
+export interface IBiblia {
+    primary: boolean;
+    isActive: boolean;
+    version: string;
+    lang: string;
+    livro: any;
+}
+
+export interface IArrowButton {
+    hide?: boolean;
+}

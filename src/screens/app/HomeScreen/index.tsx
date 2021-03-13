@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Actions, CardVersiculo, SocialCircle, Title, VersiculoInfo, VersiculoText } from './style'
 import { SafeContainer, Container } from '../../../styles/globals'
 import { versiculosFake } from '../../../data/constants'
 import { FlatList, View } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import { useTheme } from 'styled-components/native'
-import { StatusBar } from 'expo-status-bar'
 
 const HomeScreen = () => {
     const { colorText,
@@ -57,6 +56,7 @@ const HomeScreen = () => {
                 <FlatList
                     ListHeaderComponent={() => <Title>Versiculos para reflexão</Title>}
                     data={versiculosFake}
+                    showsVerticalScrollIndicator={false}
                     renderItem={renderItem}
                     keyExtractor={item => item.id} />
             </Container>
