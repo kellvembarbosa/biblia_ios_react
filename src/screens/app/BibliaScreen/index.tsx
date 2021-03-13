@@ -102,13 +102,13 @@ const BibliaScreen = () => {
 
     useEffect(() => {
         if (ShowModalChapter > 0) {
-            setTimeout(() => actionSheetChapterRef.current?.show(), 150)
+            setTimeout(() => actionSheetChapterRef.current?.show(), 250)
         }
     }, [ShowModalChapter])
 
     useEffect(() => {
         if (ShowModalVerse > 0) {
-            setTimeout(() => actionSheetVersesRef.current?.show(), 150)
+            setTimeout(() => actionSheetVersesRef.current?.show(), 250)
         }
     }, [ShowModalVerse])
 
@@ -124,14 +124,14 @@ const BibliaScreen = () => {
         const CurrentVerseId = Verse + 1;
         switch (action) {
             case 'next':
-                console.log('next', books, chapters, verses);
+                // console.log('next', books, chapters, verses);
 
                 if (CurrentChapterId < chapters) {
                     setVerse(0)
                     setChapter(Chapter + 1)
                     scrollToIndex(0)
                 } else if (CurrentBookId < books) {
-                    setBookId(CurrentBookId + 1)
+                    setBookId(BookId + 1)
                     setChapter(0)
                     setVerse(0)
                     scrollToIndex(0)
@@ -139,12 +139,13 @@ const BibliaScreen = () => {
 
                 break;
             case 'previuos':
-                console.log('previuos', CurrentBookId, CurrentChapterId, CurrentVerseId);
+                // console.log('previuos', CurrentBookId, CurrentChapterId, CurrentVerseId);
 
                 if (CurrentChapterId == 1 && CurrentBookId > 1) {
                     console.log('---', Chapter - 1)
                     setVerse(0)
                     setBookId(BookId - 1)
+                    setChapter(bibliaObject.livro[BookId - 1].chapters.length - 1)
                     scrollToIndex(0)
                 } else if (CurrentChapterId > 1) {
                     setChapter(Chapter - 1)
@@ -203,42 +204,41 @@ const BibliaScreen = () => {
                                     data={bibliaObject?.livro[BookId].chapters[Chapter].verses}
                                     renderItem={renderVerses}
                                     ListFooterComponent={<View />}
-                                    ListFooterComponentStyle={{ height: 50 }}
+                                    ListFooterComponentStyle={{ height: 600 }}
                                     keyExtractor={(item, index) => index.toString()}
                                 />
                             }
                         </ContainerBiblia>
+                        <ContainerArrows>
+                            <ArrowLeft hide={
+                                BookId == 0 && Chapter == 0
+                            } onPress={() => {
+                                handlerArrow(
+                                    'previuos',
+                                    bibliaObject.livro.length,
+                                    bibliaObject.livro[BookId].chapters.length,
+                                    bibliaObject.livro[BookId].chapters[Chapter].verses.length
+                                )
+                            }}>
+                                <FontAwesome5 name="arrow-left" size={24} color={colorText} />
+                            </ArrowLeft>
+                            <ArrowRight hide={
+                                bibliaObject.livro.length == BookId + 1 &&
+                                bibliaObject.livro[BookId].chapters.length == Chapter + 1
+                            } onPress={() => {
+                                handlerArrow(
+                                    'next',
+                                    bibliaObject.livro.length,
+                                    bibliaObject.livro[BookId].chapters.length,
+                                    bibliaObject.livro[BookId].chapters[Chapter].verses.length
+                                )
+                            }}>
+                                <FontAwesome5 name="arrow-right" size={24} color={colorText} />
+                            </ArrowRight>
+                        </ContainerArrows>
                     </>
                 }
-                <ContainerArrows>
-                    <ArrowLeft hide={
-                        BookId == 0 && Chapter == 0
-                    } onPress={() => {
-                        handlerArrow(
-                            'previuos',
-                            bibliaObject.livro.length,
-                            bibliaObject.livro[BookId].chapters.length,
-                            bibliaObject.livro[BookId].chapters[Chapter].verses.length
-                        )
-                    }}>
-                        <FontAwesome5 name="arrow-left" size={24} color={colorText} />
-                    </ArrowLeft>
-                    <ArrowRight hide={
-                        (
-                            bibliaObject.livro.length == BookId &&
-                            bibliaObject.livro[BookId].chapters.length == Chapter
-                        )
-                    } onPress={() => {
-                        handlerArrow(
-                            'next',
-                            bibliaObject.livro.length,
-                            bibliaObject.livro[BookId].chapters.length,
-                            bibliaObject.livro[BookId].chapters[Chapter].verses.length
-                        )
-                    }}>
-                        <FontAwesome5 name="arrow-right" size={24} color={colorText} />
-                    </ArrowRight>
-                </ContainerArrows>
+
             </Container>
 
             <ActionSheet
@@ -257,14 +257,17 @@ const BibliaScreen = () => {
                     <Title style={{ paddingBottom: 12 }}>Selecione o livro: </Title>
                     {bibliaObject && bibliaObject.livro.map((item: any, index: number) => {
                         return (
-                            <ContainerSelectBook key={index} onPress={() => {
-                                setVerse(0)
-                                setChapter(0)
-                                setBookId(index)
-                                actionSheetBookRef.current?.hide();
-                                setShowModalChapter(ShowModalChapter + 1)
-                                scrollToIndex(0);
-                            }}>
+                            <ContainerSelectBook
+                                key={index}
+                                isSelected={index == BookId}
+                                onPress={() => {
+                                    setVerse(0)
+                                    setChapter(0)
+                                    setBookId(index)
+                                    actionSheetBookRef.current?.hide();
+                                    setShowModalChapter(ShowModalChapter + 1)
+                                    scrollToIndex(0);
+                                }}>
                                 <SelectButtonBook>
                                     {item.name}
                                 </SelectButtonBook>
@@ -300,19 +303,25 @@ const BibliaScreen = () => {
                     {bibliaObject && <FlatList
                         data={bibliaObject.livro[BookId].chapters}
                         numColumns={6}
-                        renderItem={({ item, index }) => (
-                            <ContainerSelectChapter key={index} onPress={() => {
-                                setChapter(index)
-                                setVerse(0)
-                                scrollToIndex(0);
-                                actionSheetChapterRef.current?.hide();
-                                setShowModalVerse(ShowModalVerse + 1)
-                            }}>
-                                <SelectButtonBook>
-                                    {index + 1}
-                                </SelectButtonBook>
-                            </ContainerSelectChapter>
-                        )}
+                        renderItem={({ item, index }) => {
+                            console.log('capítulo', index == Chapter)
+                            return (
+                                <ContainerSelectChapter
+                                    key={index}
+                                    isSelected={index == Chapter}
+                                    onPress={() => {
+                                        setChapter(index)
+                                        setVerse(0)
+                                        scrollToIndex(0);
+                                        actionSheetChapterRef.current?.hide();
+                                        setShowModalVerse(ShowModalVerse + 1)
+                                    }}>
+                                    <SelectButtonBook>
+                                        {index + 1}
+                                    </SelectButtonBook>
+                                </ContainerSelectChapter>
+                            )
+                        }}
                         keyExtractor={(item, index) => index.toString()}
                     />
                     }
@@ -337,11 +346,13 @@ const BibliaScreen = () => {
                         data={bibliaObject.livro[BookId].chapters[Chapter].verses}
                         numColumns={6}
                         renderItem={({ item, index }) => (
-                            <ContainerSelectChapter key={index} onPress={() => {
-                                setVerse(index)
-                                scrollToIndex(index);
-                                actionSheetVersesRef.current?.hide();
-                            }}>
+                            <ContainerSelectChapter
+                                key={index}
+                                onPress={() => {
+                                    setVerse(index)
+                                    scrollToIndex(index);
+                                    actionSheetVersesRef.current?.hide();
+                                }}>
                                 <SelectButtonBook>
                                     {index + 1}
                                 </SelectButtonBook>

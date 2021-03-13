@@ -1,5 +1,5 @@
 import { TextProps, TouchableOpacityProps, ViewProps } from 'react-native';
-import { IArrowButton, IContainerBottomSheet, INumberVerse, ISelectedButton } from '../../../interfaces/types';
+import { IArrowButton, IContainerBottomSheet, INumberVerse, ISelected, ISelectedButton } from '../../../interfaces/types';
 import styled from 'styled-components/native';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -18,23 +18,23 @@ export const ContainerBiblia = styled.View`
 export const BibliaRow = styled.TouchableOpacity`
 `
 
-export const ContainerSelectBook = styled.TouchableOpacity`
+export const ContainerSelectBook = styled.TouchableOpacity<ISelected & TouchableOpacityProps>`
     flex-direction: row;
     align-items: center;
     margin-bottom: 12px;
-    background-color: ${({ theme }) => theme.backgroundColor};
+    background-color: ${({ theme, isSelected }) => isSelected ? theme.secondaryColor : theme.backgroundColor};
     padding: 12px 12px;
     border-radius: 4px;
     justify-content: space-between;
 `
 
-export const ContainerSelectChapter = styled.TouchableOpacity`
+export const ContainerSelectChapter = styled.TouchableOpacity<ISelected & TouchableOpacityProps>`
     flex-direction: column;
     flex: 1;
     justify-content: center;
     align-items: center;
     margin-bottom: 12px;
-    background-color: ${({ theme }) => theme.backgroundColor};
+    background-color: ${({ theme, isSelected }) => isSelected ? theme.secondaryColor : theme.backgroundColor};
     padding: 12px 12px;
     margin: 4px;
     border-radius: 4px;

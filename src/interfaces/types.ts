@@ -38,3 +38,7 @@ export interface IBiblia {
 export interface IArrowButton {
     hide?: boolean;
 }
+
+export interface ISelected {
+    isSelected?: boolean;
+}
