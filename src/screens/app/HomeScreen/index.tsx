@@ -5,6 +5,7 @@ import { versiculosFake } from '../../../data/constants'
 import { FlatList, View } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import { useTheme } from 'styled-components/native'
+import { useSettings } from '../../../states/setting'
 
 const HomeScreen = () => {
     const { colorText,
@@ -22,12 +23,14 @@ const HomeScreen = () => {
         console.log("HomeScreen")
     }, [])
 
+    const { fontHomeSize } = useSettings();
+
     const renderItem = ({ item }: any) => {
         return (
             <CardVersiculo>
-                <VersiculoText>{item.versiculoTexto}</VersiculoText>
+                <VersiculoText fontSize={16} scaling={fontHomeSize()}>{item.versiculoTexto}</VersiculoText>
                 <Actions>
-                    <VersiculoInfo>
+                    <VersiculoInfo fontSize={22} scaling={fontHomeSize()}>
                         {item.versiculoInfo}
                     </VersiculoInfo>
 

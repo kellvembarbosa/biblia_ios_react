@@ -6,8 +6,12 @@ import HomeScreen from '../screens/app/HomeScreen';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components/native';
 import BibliaScreen from '../screens/app/BibliaScreen'
-import ProfileScreen from '../screens/app/ProfileScreen'
+import ProfileScreen from '../screens/app/MinhBibliaScreen'
 import { StatusBar } from 'expo-status-bar';
+import RegisterScreen from '../screens/app/RegisterScreen';
+import LoginScreen from '../screens/app/LoginScreen';
+import VersiculoDiaScreen from '../screens/app/FavoritosScreen';
+import FavoritosScreen from '../screens/app/FavoritosScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,7 +28,7 @@ function AppRoutes() {
                 name="Home"
                 component={HomeScreen}
                 options={{
-                    tabBarLabel: 'Home',
+                    tabBarLabel: 'Feed',
                     tabBarIcon: ({ color }) => (
                         <FontAwesome name="list" size={22} color={color} />
                     ),
@@ -38,6 +42,17 @@ function AppRoutes() {
                     tabBarLabel: 'Bíblia',
                     tabBarIcon: ({ color }) => (
                         <MaterialIcons name="menu-book" size={25} color={color} />
+                    ),
+                }}
+            />
+
+            <Tab.Screen
+                name="Favoritos"
+                component={FavoritosScreen}
+                options={{
+                    tabBarLabel: 'Favoritos',
+                    tabBarIcon: ({ color }) => (
+                        <MaterialIcons name="star" size={25} color={color} />
                     ),
                 }}
             />
@@ -57,31 +72,42 @@ function AppRoutes() {
 
     return (
         <>
-            <BottomNav />
-
             <StatusBar style={theme.isDarkTheme ? "light" : "dark"} />
+            <Stack.Navigator
+                screenOptions={{
+                    headerTintColor: theme.colorText,
+                    headerStyle: {
+                        backgroundColor: theme.backgroundColor,
+                        elevation: 0,
+                        shadowRadius: 0,
+                        shadowColor: "transparent"
+                    },
+                }}
+                initialRouteName="Tabs">
+
+                <Stack.Screen
+                    name="Tabs"
+                    options={{
+                        title: 'Bíblia',
+                        headerShown: false
+                    }}
+                    component={BottomNav} />
+
+                <Stack.Screen
+                    name="Register"
+                    component={RegisterScreen}
+                    options={{
+                        title: 'Registro'
+                    }} />
+                <Stack.Screen
+                    name="Login"
+                    component={LoginScreen}
+                    options={{
+                        title: 'Login',
+                    }} />
+
+            </Stack.Navigator>
         </>
-        // <Stack.Navigator
-        //     screenOptions={{
-        //         headerTintColor: 'white',
-        //         headerStyle: {
-        //             backgroundColor: 'tomato',
-        //             elevation: 0,
-        //             shadowRadius: 0,
-        //             shadowColor: "transparent"
-        //         },
-        //     }}
-
-        //     initialRouteName="Tabs">
-
-        //     <Stack.Screen
-        //         name="Tabs"
-        //         options={{
-        //             title: 'Bíblia Sagrada',
-        //             // headerTransparent: true,
-        //         }}
-        //         component={bottomNav} />
-        // </Stack.Navigator>
     )
 }
 

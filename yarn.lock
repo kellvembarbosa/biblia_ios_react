@@ -1359,6 +1359,11 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@hookstate/core@^3.0.4", "@hookstate/core@^3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@hookstate/core/-/core-3.0.6.tgz#1a686d05076f0c58e2c96c9afa2bed85964f2577"
+  integrity sha512-WxFM9gYJvjIXqnpRw74ue+5pEAHzTWf7CbAYV33yFTD9rxCw4o/aeGkAQO+alB+fXjIZuiZzRntP/BAbzAguKw==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -1888,10 +1893,10 @@
     "@babel/runtime" "^7.7.2"
     regenerator-runtime "^0.13.3"
 
-"@react-native-community/async-storage@^1.12.1":
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.1.tgz#25f821b4f6b13abe005ad67e47c6f1cee9f27b24"
-  integrity sha512-70WGaH3PKYASi4BThuEEKMkyAgE9k7VytBqmgPRx3MzJx9/MkspwqJGmn3QLCgHLIFUgF1pit2mWICbRJ3T3lg==
+"@react-native-async-storage/async-storage@^1.14.1":
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.14.1.tgz#3c2ff2b1a312df3b1c809a60fa88665e50a095b8"
+  integrity sha512-UkLUox2q5DKNYB6IMUzsuwrTJeXGLySvtQlnrqd3fd+96JErCT4X3xD+W1cvQjes0nm0LbaELbwObKc+Tea7wA==
   dependencies:
     deep-assign "^3.0.0"
 
@@ -2069,6 +2074,10 @@
   integrity sha512-sruwd86RJHdsVf/AtBoijDmUqJp3B6hF/DGC23C+JaegnDHaZyewCjoVGTdg3J0uz3Zs7NnIT05OBOmML72lQw==
   dependencies:
     type-detect "4.0.8"
+
+"@taccolaa/react-native-settings-screen@https://github.com/kellvembarbosa/react-native-settings-screen.git":
+  version "2.2.10"
+  resolved "https://github.com/kellvembarbosa/react-native-settings-screen.git#5d8d275307a587e30249beb3763b8bd27ec71f9f"
 
 "@types/babel__core@^7.1.7":
   version "7.1.12"
@@ -4585,6 +4594,13 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
+git@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/git/-/git-0.1.5.tgz#9ef62df93f851c27542143bf52d1c68b1017ca15"
+  integrity sha1-nvYt+T+FHCdUIUO/UtHGixAXyhU=
+  dependencies:
+    mime "1.2.9"
+
 glob@7.1.6, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
   version "7.1.6"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
@@ -4714,6 +4730,13 @@ hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.0:
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
   dependencies:
     react-is "^16.7.0"
+
+hookstate-persist@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/hookstate-persist/-/hookstate-persist-1.0.2.tgz#9c1b9282a5ea8a777f51c20c87bfd0623428043d"
+  integrity sha512-+AdsjOSWlJIPeXyN4622Zt8tE5ynz1PkZ9xbdmxoztjgReMUp0rWZ3I/KTnSunWnAYAM3UkDHpakcuSt2dbscA==
+  dependencies:
+    "@hookstate/core" "^3.0.4"
 
 hosted-git-info@^2.1.4:
   version "2.8.8"
@@ -6450,6 +6473,11 @@ mime-types@^2.1.12, mime-types@~2.1.19, mime-types@~2.1.24:
   dependencies:
     mime-db "1.46.0"
 
+mime@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-1.2.9.tgz#009cd40867bd35de521b3b966f04e2f8d4d13d09"
+  integrity sha1-AJzUCGe9Nd5SGzuWbwTi+NTRPQk=
+
 mime@1.6.0, mime@^1.3.4:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
@@ -7640,11 +7668,6 @@ realpath-native@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/realpath-native/-/realpath-native-2.0.0.tgz#7377ac429b6e1fd599dc38d08ed942d0d7beb866"
   integrity sha512-v1SEYUOXXdbBZK8ZuNgO4TBjamPsiSgcFr0aP+tEKpQZK8vooEUqV6nm6Cv502mX4NF2EfsnVqtNAHG+/6Ur1Q==
-
-recoil@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/recoil/-/recoil-0.1.3.tgz#3926b29ece8748967a0ff6c10516aca436cf4ae8"
-  integrity sha512-/Rm7wN7jqCjhtFK1TgtK0V115SUXNu6d4QYvwxWNLydib0QChSmpB6U8CaHoRPS0MFWtAIsD/IFjpbfk/OYm7Q==
 
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"

@@ -1,8 +1,9 @@
-import { ViewProps } from 'react-native';
-import { ISocialicons } from '../../../interfaces/types';
+import { TextProps, ViewProps } from 'react-native';
+import { ITipography, ISocialicons } from '../../../interfaces/types';
 import styled from 'styled-components/native';
+import { getFontSize } from '../../../utils/fontsizes';
 
-export const CardVersiculo = styled.View`
+export const CardVersiculo = styled.View<ViewProps>`
   border-radius: 6px;
   width: 100%;
   padding: 12px;
@@ -28,26 +29,27 @@ export const SocialCircle = styled.View<ISocialicons & ViewProps>`
   padding: 4px;
 `
 
-export const Title = styled.Text`
+export const Title = styled.Text<TextProps>`
   color: ${({ theme }) => theme.colorText};
-  font-size: 24px;
+  font-size: ${getFontSize(24)};
   margin-bottom: 12px;
   text-align: center;
-  font-weight: 700;
-
+  font-family: 'Roboto';
 `
 
-export const VersiculoText = styled.Text`
+export const VersiculoText = styled.Text<ITipography & TextProps>`
   color: ${({ theme }) => theme.colorText};
   text-align: center;
-  font-size: 18px;
-  font-weight: 300;
+  font-size: ${({ fontSize, scaling }) => getFontSize(fontSize, scaling)};
+  font-family: 'Roboto-Light';
+  line-height: ${({ scaling }) => getFontSize(24, scaling)};
 `
 
-export const VersiculoInfo = styled.Text`
+export const VersiculoInfo = styled.Text<ITipography & TextProps>`
   color: ${({ theme }) => theme.colorText};
   text-align: center;
-  font-size: 22px;
+  font-size: ${({ fontSize, scaling }) => getFontSize(fontSize, scaling)};
   font-weight: 800;
   font-style: italic;
+  font-family: 'Roboto-BoldItalic';
 `

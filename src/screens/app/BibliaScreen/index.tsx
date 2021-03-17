@@ -1,39 +1,65 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import { createRef } from 'react';
-import { SafeContainer, Container, ContainerSheet, CenteredContainer } from '../../../styles/globals'
-import { Actions, ArrowLeft, ArrowRight, BibliaRow, ContainerArrows, ContainerBiblia, ContainerSelectBook, ContainerSelectChapter, IconLang, SelectButtonBook, SelectedButton, SelectedButtonText, Title } from './style';
+import {
+    SafeContainer,
+    Container,
+    ContainerSheet,
+    CenteredContainer
+} from '../../../styles/globals'
+import {
+    Actions,
+    ArrowLeft,
+    ArrowRight,
+    ContainerArrows,
+    ContainerBiblia,
+    ContainerSelectBook,
+    ContainerSelectChapter,
+    IconLang,
+    SelectButtonBook,
+    SelectedButton,
+    SelectedButtonText,
+    Title
+} from './style';
 import { useTheme } from 'styled-components/native';
-import { View, Text, Button, StatusBar, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
-import { useRecoilState } from 'recoil';
-import { defualtThemeState, snapPointsState } from '../../../recoils/atoms';
+import {
+    View,
+    ActivityIndicator,
+    FlatList
+} from 'react-native';
 import ActionSheet from 'react-native-actions-sheet';
-import { darkTheme, lightTheme } from '../../../styles/theme';
-import { ScrollView } from 'react-native-gesture-handler';
-import VerseRow, { NumberVerse, VerseText } from './components/verse';
-import { IBiblia, VerseProps } from '../../../interfaces/types';
+import VerseRow from './components/verse';
+import { VerseProps } from '../../../interfaces/types';
 import getRealm, { addBookFavorite } from '../../../services/realm';
 import Parse from 'parse/react-native.js'
 import { BIBLE_SCHEMA } from '../../../data/schema';
-import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import {
+    FontAwesome,
+    FontAwesome5
+} from '@expo/vector-icons';
 
+import { useMyTheme } from '../../../states/theme';
 
 const BibliaScreen = () => {
-
-    const [bibliaObject, setBibliaObject] = useState<any>(null)
-    const [BookId, setBookId] = useState(0)
-    const [Chapter, setChapter] = useState<number>(0)
-    const [Verse, setVerse] = useState<number>(0)
+    const [bibliaObject, setBibliaObject] = React.useState<any>(null)
+    const [BookId, setBookId] = React.useState(0)
+    const [Chapter, setChapter] = React.useState<number>(0)
+    const [Verse, setVerse] = React.useState<number>(0)
 
     const { colorText, cardColor, backgroundColor, isDarkTheme, primaryColor } = useTheme();
-    const [theme, setThemed] = useRecoilState(defualtThemeState);
+
     const actionSheetBookRef = createRef<ActionSheet>();
     const actionSheetChapterRef = createRef<ActionSheet>();
     const actionSheetVersesRef = createRef<ActionSheet>();
-    const [reload, setReload] = useState(0);
-    const [ShowModalChapter, setShowModalChapter] = useState(0);
-    const [ShowModalVerse, setShowModalVerse] = useState(0);
+    const actionSheetVersiculoRef = createRef<ActionSheet>();
+
+    const [reload, setReload] = React.useState(0);
+    const [ShowModalChapter, setShowModalChapter] = React.useState(0);
+    const [ShowModalVerse, setShowModalVerse] = React.useState(0);
 
     const renderVerses = ({ item, index }: VerseProps) => <VerseRow
+        onPress={() => {
+            actionSheetVersiculoRef.current!.setModalVisible();
+        }}
         key={index}
         item={item}
         index={index} />
@@ -52,13 +78,14 @@ const BibliaScreen = () => {
 
                 try {
                     const response = await query.first();
-                    //setBibliaObject(response);
-
+                    // setBibliaObject(response);
                     // convert o json para o formato do schema
                     const livro = response!.get('livro').map((item: any) => {
+
                         const chapters = item.chapters.map((verses: any) => {
                             return { verses: verses.map((verse: any) => { return { verse } }) }
                         })
+
                         return {
                             name: item.name,
                             abbrev: item.abbrev,
@@ -112,7 +139,6 @@ const BibliaScreen = () => {
         }
     }, [ShowModalVerse])
 
-
     const handlerArrow = (
         action: string,
         books: number,
@@ -122,10 +148,10 @@ const BibliaScreen = () => {
         const CurrentBookId = BookId + 1;
         const CurrentChapterId = Chapter + 1;
         const CurrentVerseId = Verse + 1;
+
         switch (action) {
             case 'next':
                 // console.log('next', books, chapters, verses);
-
                 if (CurrentChapterId < chapters) {
                     setVerse(0)
                     setChapter(Chapter + 1)
@@ -140,7 +166,6 @@ const BibliaScreen = () => {
                 break;
             case 'previuos':
                 // console.log('previuos', CurrentBookId, CurrentChapterId, CurrentVerseId);
-
                 if (CurrentChapterId == 1 && CurrentBookId > 1) {
                     console.log('---', Chapter - 1)
                     setVerse(0)
@@ -190,12 +215,11 @@ const BibliaScreen = () => {
                                 <SelectedButtonText>{Verse + 1}</SelectedButtonText>
                             </SelectedButton>
 
-                            <SelectedButton alignItems="center" onPress={() => {
-                                setThemed(theme === darkTheme ? lightTheme : darkTheme);
-                            }}>
+                            <SelectedButton alignItems="center" onPress={() => { }}>
                                 <IconLang name="language" color={colorText} />
                             </SelectedButton>
                         </Actions>
+
                         <ContainerBiblia>
                             {
                                 bibliaObject.livro && <FlatList
@@ -204,35 +228,34 @@ const BibliaScreen = () => {
                                     data={bibliaObject?.livro[BookId].chapters[Chapter].verses}
                                     renderItem={renderVerses}
                                     ListFooterComponent={<View />}
-                                    ListFooterComponentStyle={{ height: 600 }}
+                                    ListFooterComponentStyle={{ height: 80 }}
                                     keyExtractor={(item, index) => index.toString()}
                                 />
                             }
                         </ContainerBiblia>
+
                         <ContainerArrows>
                             <ArrowLeft hide={
                                 BookId == 0 && Chapter == 0
-                            } onPress={() => {
-                                handlerArrow(
-                                    'previuos',
-                                    bibliaObject.livro.length,
-                                    bibliaObject.livro[BookId].chapters.length,
-                                    bibliaObject.livro[BookId].chapters[Chapter].verses.length
-                                )
-                            }}>
+                            } onPress={() => handlerArrow(
+                                'previuos',
+                                bibliaObject.livro.length,
+                                bibliaObject.livro[BookId].chapters.length,
+                                bibliaObject.livro[BookId].chapters[Chapter].verses.length
+                            )
+                            }>
                                 <FontAwesome5 name="arrow-left" size={24} color={colorText} />
                             </ArrowLeft>
                             <ArrowRight hide={
                                 bibliaObject.livro.length == BookId + 1 &&
                                 bibliaObject.livro[BookId].chapters.length == Chapter + 1
-                            } onPress={() => {
-                                handlerArrow(
-                                    'next',
-                                    bibliaObject.livro.length,
-                                    bibliaObject.livro[BookId].chapters.length,
-                                    bibliaObject.livro[BookId].chapters[Chapter].verses.length
-                                )
-                            }}>
+                            } onPress={() => handlerArrow(
+                                'next',
+                                bibliaObject.livro.length,
+                                bibliaObject.livro[BookId].chapters.length,
+                                bibliaObject.livro[BookId].chapters[Chapter].verses.length
+                            )
+                            }>
                                 <FontAwesome5 name="arrow-right" size={24} color={colorText} />
                             </ArrowRight>
                         </ContainerArrows>
@@ -268,15 +291,17 @@ const BibliaScreen = () => {
                                     setShowModalChapter(ShowModalChapter + 1)
                                     scrollToIndex(0);
                                 }}>
+
                                 <SelectButtonBook>
                                     {item.name}
                                 </SelectButtonBook>
 
-                                <FontAwesome onPress={() => {
-                                    console.log('clicou em favoritos')
-                                    addBookFavorite(item)
-                                    setReload(reload + 1)
-                                }}
+                                <FontAwesome
+                                    onPress={() => {
+                                        console.log('clicou em favoritos')
+                                        addBookFavorite(item)
+                                        setReload(reload + 1)
+                                    }}
                                     name={item.favorite === 1 ? "star" : "star-o"}
                                     size={24}
                                     color={item.favorite === 1 ? primaryColor : colorText} />
@@ -304,7 +329,6 @@ const BibliaScreen = () => {
                         data={bibliaObject.livro[BookId].chapters}
                         numColumns={6}
                         renderItem={({ item, index }) => {
-                            console.log('capítulo', index == Chapter)
                             return (
                                 <ContainerSelectChapter
                                     key={index}
@@ -325,6 +349,41 @@ const BibliaScreen = () => {
                         keyExtractor={(item, index) => index.toString()}
                     />
                     }
+                </ContainerSheet>
+            </ActionSheet>
+
+            <ActionSheet
+                ref={actionSheetVersiculoRef}
+                initialOffsetFromBottom={1}
+                statusBarTranslucent
+                bounceOnOpen={true}
+                bounciness={4}
+                bottomOffset={0}
+                indicatorColor={backgroundColor}
+                containerStyle={{ backgroundColor: cardColor }}
+                gestureEnabled={true}
+                defaultOverlayOpacity={0.8}>
+
+                <ContainerSheet showsVerticalScrollIndicator={false} height="auto">
+                    <Title>Selecione o versículo: </Title>
+                    {bibliaObject && <FlatList
+                        data={bibliaObject.livro[BookId].chapters[Chapter].verses}
+                        numColumns={6}
+                        renderItem={({ item, index }) => (
+                            <ContainerSelectChapter
+                                key={index}
+                                onPress={() => {
+                                    setVerse(index)
+                                    scrollToIndex(index);
+                                    actionSheetVersesRef.current?.hide();
+                                }}>
+                                <SelectButtonBook>
+                                    {index + 1}
+                                </SelectButtonBook>
+                            </ContainerSelectChapter>
+                        )}
+                        keyExtractor={(item, index) => index.toString()}
+                    />}
                 </ContainerSheet>
             </ActionSheet>
 

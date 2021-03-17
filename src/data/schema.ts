@@ -5,6 +5,7 @@ export const BIBLE_SCHEMA = 'Bible'
 export const LIVRO_SCHEMA = 'Book'
 export const CHAPTER_SCHEMA = 'Chapter'
 export const VERSE_SCHEMA = 'Verse'
+export const SETTING_SCHEMA = 'Setting'
 
 export const BibleSchema = {
     name: BIBLE_SCHEMA,
@@ -44,10 +45,19 @@ export const VerseSchema = {
     }
 }
 
+// export const SettingSchema = {
+//     name: SETTING_SCHEMA,
+//     primaryKey: 'key',
+//     properties: {
+//         key: { type: 'string' },
+//         value: { type: 'string' }
+//     }
+// }
+
 export const databaseOptions: Realm.Configuration = {
     schema: [BibleSchema, LivroSchema, ChapterSchema, VerseSchema],
-    schemaVersion: 3,
-    path: 'bdadaaa',
+    schemaVersion: 1,
+    path: 'bdbibliaa',
     migration: (oldRealm: Realm, newRealm: Realm) => {
         console.log('migration: ', oldRealm.schemaVersion, ' new ', newRealm.schemaVersion)
     }

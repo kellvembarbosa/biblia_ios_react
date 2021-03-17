@@ -7,8 +7,10 @@ declare module "styled-components" {
         secondaryColor: string;
 
         backgroundColor: string;
+        backgroundInput: string;
         cardColor: string;
         colorText: string;
+        borderColor: string;
         tabBarOptions: {
             // activeBackgroundColor: string;
             // inactiveBackgroundColor: string;
@@ -41,7 +43,9 @@ export const lightTheme: DefaultTheme = {
     secondaryColor: "#E46B10",
 
     backgroundColor: "#f3f3f3",
+    borderColor: "#d9d9d9",
     cardColor: "#fff",
+    backgroundInput: "#f9f9f9",
 
     colorText: "#222",
 
@@ -73,7 +77,9 @@ export const darkTheme: DefaultTheme = {
     secondaryColor: "#E46B10",
 
     backgroundColor: "#000",
+    borderColor: "#555",
     cardColor: "#222",
+    backgroundInput: "#111111",
 
     colorText: "#fff",
 

@@ -2,6 +2,7 @@ import { TextProps, TouchableOpacityProps, ViewProps } from 'react-native';
 import { IArrowButton, IContainerBottomSheet, INumberVerse, ISelected, ISelectedButton } from '../../../interfaces/types';
 import styled from 'styled-components/native';
 import { FontAwesome } from '@expo/vector-icons';
+import { getFontSize } from '../../../utils/fontsizes';
 
 export const Actions = styled.View`
     width: 100%; 
@@ -87,17 +88,17 @@ export const ContainerArrows = styled.View`
 
 export const SelectedButtonText = styled.Text`
     color: ${({ theme }) => theme.colorText};
-    font-size: 18px;
+    font-size: ${getFontSize(18)};
 `;
 
 export const SelectButtonBook = styled.Text`
     color: ${({ theme }) => theme.colorText};
-    font-size: 22px;
+    font-size: ${getFontSize(22)};
 `;
 
 export const Title = styled.Text`
     color: ${({ theme }) => theme.colorText};
-    font-size: 22px;
+    font-size: ${getFontSize(22)};
     font-weight: bold;
     padding: 8px 8px 4px 4px;
 `;

@@ -18,13 +18,26 @@ export interface IContainerBottomSheet {
     height: string;
 }
 
+export interface ITipography {
+    fontSize: number;
+    scaling?: number;
+}
+
 export interface INumberVerse {
+    fontSize: number;
+    scaling?: number;
+}
+
+export interface IVerseText {
     isFirst?: boolean;
+    fontSize: number;
+    scaling?: number;
 }
 
 export interface VerseProps {
     item: any;
     index: number;
+    onPress?: Function;
 }
 
 export interface IBiblia {

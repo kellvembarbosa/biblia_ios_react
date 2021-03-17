@@ -3,31 +3,35 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import Routers from './routers';
 import { ThemeProvider } from "styled-components/native";
-import { RecoilRoot, useRecoilValue } from 'recoil';
-import { defualtThemeState } from './recoils/atoms';
 import Parse from 'parse/react-native.js'
+import { useFonts } from 'expo-font';
+import { useMyTheme } from './states/theme';
 
 const AsyncStorage = require('react-native').AsyncStorage;
 Parse.setAsyncStorage(AsyncStorage);
-Parse.initialize('QB2utfmO5d34QzKcuOhFk5iomKpaYpQi4ajl7qlm', 'p5XkIY2uwURpqE8CkbJn1MlPviwowRwJr8nMYf9h');
-Parse.serverURL = 'https://bibliasagrada.b4a.io/';
+Parse.initialize('com.biblia', 'javascriptKeyKellvem');
+Parse.serverURL = 'https://parse.kellvem.pt/biblia';
 
-const ThemedApp = () => {
-  const themeValue = useRecoilValue(defualtThemeState)
+export default function App() {
+  const currentTheme = useMyTheme();
+  const [loaded] = useFonts({
+    'Roboto': require('../assets/fonts/Roboto-Medium.ttf'),
+    'Roboto-Light': require('../assets/fonts/Roboto-Light.ttf'),
+    'Roboto-Thin': require('../assets/fonts/Roboto-Thin.ttf'),
+    'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+    'Roboto-BoldItalic': require('../assets/fonts/Roboto-BoldItalic.ttf'),
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
+
   return (
-    <ThemeProvider theme={themeValue}>
+    <ThemeProvider theme={currentTheme.get()}>
       <NavigationContainer>
         <Routers />
       </NavigationContainer>
     </ThemeProvider>
-  )
-}
-
-export default function App() {
-
-  return (
-    <RecoilRoot>
-      <ThemedApp />
-    </RecoilRoot>
   );
 }
