@@ -7,6 +7,17 @@ import Parse from 'parse/react-native.js'
 import { useFonts } from 'expo-font';
 import { useMyTheme } from './states/theme';
 import { NativeModules, Platform } from 'react-native';
+import i18n from 'i18n-js';
+
+
+const deviceLanguage =
+  Platform.OS === 'ios'
+    ? NativeModules.SettingsManager.settings.AppleLocale ||
+    NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
+    : NativeModules.I18nManager.localeIdentifier;
+
+i18n.locale = deviceLanguage;
+i18n.fallbacks = true;
 
 const AsyncStorage = require('react-native').AsyncStorage;
 Parse.setAsyncStorage(AsyncStorage);
@@ -14,14 +25,6 @@ Parse.initialize('com.biblia', 'javascriptKeyKellvem');
 Parse.serverURL = 'https://parse.kellvem.pt/biblia';
 
 export default function App() {
-
-  const deviceLanguage =
-    Platform.OS === 'ios'
-      ? NativeModules.SettingsManager.settings.AppleLocale ||
-      NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
-      : NativeModules.I18nManager.localeIdentifier;
-
-  console.log(deviceLanguage); //en_US
 
   const currentTheme = useMyTheme();
   const [loaded] = useFonts({

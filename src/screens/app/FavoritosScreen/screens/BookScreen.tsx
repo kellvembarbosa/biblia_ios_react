@@ -5,6 +5,7 @@ import { IBooks, IVerses } from '../../../../interfaces/types';
 import { getMarksByBook } from '../../../../services/realm';
 import { Centered, ContainerScroll, SafeContainer } from '../../../../styles/globals'
 import VerseRow from '../../BibliaScreen/components/VerseRow';
+import i18n from 'i18n-js';
 
 const BookScreen = () => {
     const [list, setList] = React.useState({} as IBooks)
@@ -66,7 +67,7 @@ const BookScreen = () => {
                         <Text style={{
                             color: 'white',
                             textAlign: 'center',
-                        }}>Não foi encontrado versículos marcados neste livro!</Text>
+                        }}>{i18n.t('NO_FOUNDS_BOOKS')}</Text>
                     </Centered>
                 )
                 :

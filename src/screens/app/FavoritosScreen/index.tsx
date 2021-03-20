@@ -10,6 +10,7 @@ import { capData, data } from '../../../data/constants';
 import { getFavoriteBooks } from '../../../services/realm';
 import { useState } from '@hookstate/core';
 import { updateMarkedState } from '../../../states/update';
+import i18n from 'i18n-js';
 
 function FavoritosScreen() {
     const { markColors, backgroundColor } = useTheme();
@@ -32,7 +33,7 @@ function FavoritosScreen() {
                     ListHeaderComponent={() => {
                         return (
                             <GenericContainer>
-                                <TitleSection>Escolha um marcador para ver os versiculos marcados: </TitleSection>
+                                <TitleSection>{i18n.t('SUBTILE_SECTION_MARKEDS')} </TitleSection>
                             </GenericContainer>
                         )
                     }}
@@ -45,7 +46,7 @@ function FavoritosScreen() {
                         nextScreen={() => navigation.navigate('MarkInterna', { colorBg: markColors[100 * item.id] })} />}
                     keyExtractor={(item, index) => item.id.toString()}
                 />
-                <TitleSection>Veja os livros favoritados: </TitleSection>
+                <TitleSection>{i18n.t('SUBTILE_SECTION_BOOKS')}</TitleSection>
             </GenericContainer>
         )
     }
@@ -53,7 +54,7 @@ function FavoritosScreen() {
     return (
         <SafeContainer>
             <Container>
-                <Title>Favoritos e Marcados</Title>
+                <Title>{i18n.t('PAGE_TITLE_FAVORITES')}</Title>
                 <FlatList
                     ListHeaderComponent={() => <RenderHeader />}
                     data={listBooks}

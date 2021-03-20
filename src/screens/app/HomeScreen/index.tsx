@@ -6,6 +6,7 @@ import { FlatList, View } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import { useTheme } from 'styled-components/native'
 import { useSettings } from '../../../states/setting'
+import i18n from 'i18n-js';
 
 const HomeScreen = () => {
     const { colorText,
@@ -57,7 +58,7 @@ const HomeScreen = () => {
         <SafeContainer>
             <Container>
                 <FlatList
-                    ListHeaderComponent={() => <Title>Versiculos para reflexão</Title>}
+                    ListHeaderComponent={() => <Title>{i18n.t('VERSE_TITLE')}</Title>}
                     data={versiculosFake}
                     showsVerticalScrollIndicator={false}
                     renderItem={renderItem}

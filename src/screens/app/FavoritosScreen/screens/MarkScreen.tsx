@@ -5,6 +5,7 @@ import { IVerses } from '../../../../interfaces/types';
 import { getItemsByColor } from '../../../../services/realm';
 import { Centered, Container, SafeContainer } from '../../../../styles/globals'
 import VerseRow from '../../BibliaScreen/components/VerseRow';
+import i18n from 'i18n-js';
 
 function MarkScreen() {
     const routes = useRoute();
@@ -43,7 +44,7 @@ function MarkScreen() {
                             <Text style={{
                                 color: 'white',
                                 textAlign: 'center',
-                            }}>Não foi encontrado versículos marcados com esta cor!</Text>
+                            }}>{i18n.t('NO_FOUNDS_MARKEDS')}</Text>
                         </Centered>
                     )
                     :

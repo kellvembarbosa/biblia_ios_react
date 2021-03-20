@@ -11,6 +11,7 @@ import { useMyTheme } from '../../../states/theme';
 import { clearAllMarked } from '../../../services/realm';
 import { useState } from '@hookstate/core';
 import { updateMarkedState } from '../../../states/update';
+import i18n from 'i18n-js';
 
 const MinhBibliaScreen = () => {
     const { colorText, borderColor, backgroundColor, backgroundInput, isDarkTheme, cardColor } = useTheme();
@@ -21,52 +22,52 @@ const MinhBibliaScreen = () => {
     const settingsData: SettingsData = [
         {
             type: 'SECTION',
-            header: 'Geral'.toUpperCase(),
-            footer: 'Você pode alterar as opções a qualquer momento!',
+            header: i18n.t('SETTINGS_GENERAL').toUpperCase(),
+            footer: i18n.t('SETTINGS_FOOTER'),
             rows: [
                 {
-                    title: 'Termos e condições',
+                    title: i18n.t('SETTINGS_TERMS'),
                     showDisclosureIndicator: true
                 },
 
                 {
-                    title: 'Política de Privacidade',
+                    title: i18n.t('SETTINGS_PRIVACY'),
                     showDisclosureIndicator: true
                 },
 
                 {
-                    title: 'Limpar todas marcações',
+                    title: i18n.t('SETTINGS_CLEAR_MARKEDS'),
                     showDisclosureIndicator: false,
                     renderAccessory: () => <Text style={{ color: 'gray' }} onPress={() => {
                         onPress()
                     }}>
-                        Limpar
+                        {i18n.t('SETTINGS_CLEAR')}
                     </Text>,
                 },
 
                 {
-                    title: 'Notificações',
+                    title: i18n.t('SETTINGS_NOTIFICATIONS'),
                     renderAccessory: () => <Switch value={setting.isNotifications()} onValueChange={() => setting.toggleNotification()} />,
                 }
             ],
         },
         {
             type: 'SECTION',
-            header: 'Design'.toUpperCase(),
+            header: i18n.t('SETTINGS_DESIGN').toUpperCase(),
             rows: [
                 {
-                    title: 'Modo escuro',
+                    title: i18n.t('SETTINGS_MODO_DARK'),
                     renderAccessory: () => <Switch value={isDarkTheme} onValueChange={() => myTheme.changeTheme()} />,
                 }
             ],
         },
         {
             type: 'SECTION',
-            header: 'Tipografia'.toUpperCase(),
-            footer: 'Você pode aumentar em escala as fontes do app!',
+            header: i18n.t('SETTINGS_TIPOGRAFIA').toUpperCase(),
+            footer: i18n.t('SETTINGS_FOOTER_RN'),
             rows: [
                 {
-                    title: 'Página da bíblia',
+                    title: i18n.t('SETTINGS_FT_BIBLE'),
                     renderAccessory: () => (
                         <Suspense fallback={() => <View />}>
                             <FontScaling
@@ -78,7 +79,7 @@ const MinhBibliaScreen = () => {
                     ),
                 },
                 {
-                    title: 'Página inicial',
+                    title: i18n.t('SETTINGS_FT_HOME'),
                     renderAccessory: () => (
                         <Suspense fallback={() => <View />}>
                             <FontScaling
@@ -95,11 +96,13 @@ const MinhBibliaScreen = () => {
 
     const onPress = () =>
         ActionSheetIOS.showActionSheetWithOptions(
+
             {
-                options: ['Cancelar', 'Limpar'],
+                options: [i18n.t('ACTIONS_CANCEL'), i18n.t('ACTIONS_CLEAN')],
                 destructiveButtonIndex: 1,
                 cancelButtonIndex: 0
             },
+
             async buttonIndex => {
                 if (buttonIndex === 0) {
                     // cancel action
@@ -113,7 +116,7 @@ const MinhBibliaScreen = () => {
 
     return (
         <SafeContainer>
-            <Title>Minha Bíblia </Title>
+            <Title>{i18n.t('TAB_MYBIBLE_TITLE')} </Title>
             <SettingsScreen
                 data={settingsData}
                 borderColor={borderColor}

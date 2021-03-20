@@ -21,6 +21,8 @@ export const BibliaRow = styled.TouchableOpacity<{ bgColor?: string; }>`
     border-radius: 4px;
     padding: 0px 6px;
     margin: 3px;
+    justify-content: center;
+    align-items: center;
 `
 
 export const ContainerSelectBook = styled.TouchableOpacity<ISelected & TouchableOpacityProps>`

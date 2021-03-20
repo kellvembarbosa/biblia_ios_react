@@ -44,6 +44,7 @@ import { CardMark } from '../FavoritosScreen/style';
 import { SocialCircle } from '../HomeScreen/style';
 import { useState } from '@hookstate/core';
 import { updateMarkedState } from '../../../states/update';
+import i18n from 'i18n-js';
 
 const BibliaScreen = () => {
     const [bibliaObject, setBibliaObject] = React.useState<any>(null)
@@ -211,7 +212,7 @@ const BibliaScreen = () => {
         // @ts-ignore
         const color = markColors[100 * (1 + index)];
         return (
-            <CardMark colorBg={cardColor} onPress={() => {
+            <CardMark colorBg={cardColor} style={{ justifyContent: 'center', alignItems: 'center' }} onPress={() => {
                 // actionSheetVerseInfoRef.current!.hide();
                 setMarkedColorVerse(Selected.item, color);
                 setTimeout(() => UpdateMarked.set(u => u + 1), 150);
@@ -523,7 +524,7 @@ const BibliaScreen = () => {
                 <ContainerSheet showsVerticalScrollIndicator={false} height="auto">
                     {Selected && <SelectedVerse> {Selected.item.verse} - {bibliaObject.livro[Selected.BookId].name} {Selected.ChapterId + 1}:{Selected.VerseId + 1} </SelectedVerse>}
 
-                    <TitleVerseInfo>Compartilhe:</TitleVerseInfo>
+                    <TitleVerseInfo>{i18n.t('ACTIONS_SHARE')}</TitleVerseInfo>
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 6 }}>
                         <SocialCircle color={colorTelegram}>
@@ -540,7 +541,7 @@ const BibliaScreen = () => {
                         </SocialCircle>
                     </View>
 
-                    <TitleVerseInfo>Selecione uma cor para marcar o versículo:</TitleVerseInfo>
+                    <TitleVerseInfo>{i18n.t('ACTIONS_SELECT_VERSE')}</TitleVerseInfo>
                     <FlatList
                         style={{ marginTop: 14 }}
                         data={data}
