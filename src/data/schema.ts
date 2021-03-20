@@ -1,5 +1,4 @@
 import Realm from 'realm'
-import getRealm from '../services/realm'
 
 export const BIBLE_SCHEMA = 'Bible'
 export const LIVRO_SCHEMA = 'Book'

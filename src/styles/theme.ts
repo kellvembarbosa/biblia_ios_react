@@ -11,6 +11,18 @@ declare module "styled-components" {
         cardColor: string;
         colorText: string;
         borderColor: string;
+
+        colorFontBiblia: string;
+
+        markColors: {
+            100: string;
+            200: string;
+            300: string;
+            400: string;
+            500: string;
+            600: string;
+        },
+
         tabBarOptions: {
             // activeBackgroundColor: string;
             // inactiveBackgroundColor: string;
@@ -39,6 +51,7 @@ declare module "styled-components" {
 
 export const lightTheme: DefaultTheme = {
     isDarkTheme: false,
+
     primaryColor: "#F79C4D",
     secondaryColor: "#E46B10",
 
@@ -47,7 +60,18 @@ export const lightTheme: DefaultTheme = {
     cardColor: "#fff",
     backgroundInput: "#f9f9f9",
 
-    colorText: "#222",
+    colorText: "#222222",
+
+    colorFontBiblia: "#000",
+
+    markColors: {
+        100: '#970304',
+        200: '#974704',
+        300: '#938c05',
+        400: '#3a9103',
+        500: '#2d947a',
+        600: '#001B8D',
+    },
 
     tabBarOptions: {
         // activeBackgroundColor: "#fff",
@@ -72,7 +96,9 @@ export const lightTheme: DefaultTheme = {
 };
 
 export const darkTheme: DefaultTheme = {
+
     isDarkTheme: true,
+
     primaryColor: "#F79C4D",
     secondaryColor: "#E46B10",
 
@@ -81,7 +107,18 @@ export const darkTheme: DefaultTheme = {
     cardColor: "#222",
     backgroundInput: "#111111",
 
-    colorText: "#fff",
+    colorText: "#ffffff",
+
+    colorFontBiblia: '#ffffff',
+
+    markColors: {
+        100: '#970304',
+        200: '#974704',
+        300: '#938c05',
+        400: '#3a9103',
+        500: '#2d947a',
+        600: '#001B8D',
+    },
 
     tabBarOptions: {
         // activeBackgroundColor: "#000",

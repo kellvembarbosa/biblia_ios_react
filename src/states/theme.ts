@@ -9,8 +9,8 @@ const wrapped = PersistorWrapper(darkTheme);
 const defaultThemeState = createState(wrapped);
 
 const themePersistor = CreatePersistor({
-    key: '@themePersist', // store name
-    engine: AsyncStorage, // storage engine which implements getItem & setItem
+    key: '@themePersist',
+    engine: AsyncStorage,
 });
 
 defaultThemeState.attach(themePersistor)
@@ -18,12 +18,10 @@ defaultThemeState.attach(themePersistor)
 const themeState = (s: State<DefaultTheme>) => ({
 
     get: () => {
-        console.log('value', s.value.isDarkTheme);
         return s.value;
     },
 
     changeTheme: () => {
-        console.log('isDarkTheme', s.value.isDarkTheme);
         return s.set(ct => ct.isDarkTheme ? lightTheme : darkTheme)
     }
 })

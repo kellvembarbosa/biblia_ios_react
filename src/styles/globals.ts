@@ -13,6 +13,16 @@ export const Container = styled.View`
   margin: 8px 8px 0px 8px;
 `;
 
+export const ContainerScroll = styled.ScrollView`
+  flex: 1;
+  margin: 8px 8px 0px 8px;
+`;
+export const Centered = styled.View`
+  flex: 1; 
+  justify-content: center;
+  align-items: center;
+`
+
 export const ContainerSheet = styled.ScrollView<IContainerBottomSheet & ViewProps>`
     height: ${({ height }) => height};
     margin: 0 8px 18px 8px;

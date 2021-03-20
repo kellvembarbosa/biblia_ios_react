@@ -16,7 +16,11 @@ export const ContainerBiblia = styled.View`
     padding: 8px 4px;
 `;
 
-export const BibliaRow = styled.TouchableOpacity`
+export const BibliaRow = styled.TouchableOpacity<{ bgColor?: string; }>`
+    background-color: ${({ bgColor, theme }) => bgColor && bgColor.length > 0 ? bgColor : theme.backgroundColor};
+    border-radius: 4px;
+    padding: 0px 6px;
+    margin: 3px;
 `
 
 export const ContainerSelectBook = styled.TouchableOpacity<ISelected & TouchableOpacityProps>`
@@ -101,4 +105,21 @@ export const Title = styled.Text`
     font-size: ${getFontSize(22)};
     font-weight: bold;
     padding: 8px 8px 4px 4px;
+`;
+
+export const SelectedVerse = styled.Text`
+    color: ${({ theme }) => theme.colorText};
+    font-size: ${getFontSize(18)};
+    font-family: 'Roboto-Bold';
+    padding: 8px 8px 4px 4px;
+    text-align: center;
+    margin-bottom: 12px;
+`;
+
+export const TitleVerseInfo = styled.Text`
+    color: ${({ theme }) => theme.colorText};
+    font-size: ${getFontSize(18)};
+    font-family: 'Roboto-Light';
+    padding: 8px 8px 4px 4px;
+    text-align: center;
 `;

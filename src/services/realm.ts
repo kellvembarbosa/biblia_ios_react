@@ -1,5 +1,6 @@
+import realm from 'realm';
 import Realm from 'realm';
-import { databaseOptions, SETTING_SCHEMA } from '../data/schema';
+import { databaseOptions, SETTING_SCHEMA, LIVRO_SCHEMA, VERSE_SCHEMA } from '../data/schema';
 
 export default function getRealm() {
     return Realm.open(databaseOptions);
@@ -9,6 +10,39 @@ export const addBookFavorite = async (item: any) => {
     const realm = await getRealm();
     realm.write(() => {
         item.favorite = item.favorite == 0 ? 1 : 0
+    })
+}
+
+export const getFavoriteBooks = async () => {
+    const realm = await getRealm();
+    return realm.objects(LIVRO_SCHEMA).filtered("favorite == 1");
+}
+
+export const getMarksByBook = async (abbrev: string) => {
+    const realm = await getRealm();
+    const book = realm.objects(LIVRO_SCHEMA).filtered(`abbrev == '${abbrev}'`);
+    return book;
+}
+
+export const setMarkedColorVerse = async (item: any, color: string) => {
+    const realm = await getRealm();
+    realm.write(() => {
+        item.marked = color === item.marked ? '' : color;
+    });
+}
+
+export const getItemsByColor = async (color: string) => {
+    const realm = await getRealm();
+    return realm.objects(VERSE_SCHEMA).filtered(`marked == '${color}'`);
+}
+
+export const clearAllMarked = async () => {
+    const realm = await getRealm();
+    const verses = realm.objects(VERSE_SCHEMA).filtered(`marked != ''`);
+    verses.map((verse: any) => {
+        realm.write(() => {
+            verse.marked = '';
+        })
     })
 }
 

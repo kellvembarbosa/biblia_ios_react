@@ -12,9 +12,19 @@ import RegisterScreen from '../screens/app/RegisterScreen';
 import LoginScreen from '../screens/app/LoginScreen';
 import VersiculoDiaScreen from '../screens/app/FavoritosScreen';
 import FavoritosScreen from '../screens/app/FavoritosScreen';
+import BookScreen from '../screens/app/FavoritosScreen/screens/BookScreen';
+import MarkScreen from '../screens/app/FavoritosScreen/screens/MarkScreen';
+
+type RootStackParamList = {
+    Tabs: undefined;
+    MarkInterna: { colorBg: string; };
+    BookInterna: { bookName: string; abbrev: string };
+};
+
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
+
 
 function AppRoutes() {
     const theme = useTheme();
@@ -74,6 +84,7 @@ function AppRoutes() {
         <>
             <StatusBar style={theme.isDarkTheme ? "light" : "dark"} />
             <Stack.Navigator
+
                 screenOptions={{
                     headerTintColor: theme.colorText,
                     headerStyle: {
@@ -94,16 +105,18 @@ function AppRoutes() {
                     component={BottomNav} />
 
                 <Stack.Screen
-                    name="Register"
-                    component={RegisterScreen}
-                    options={{
-                        title: 'Registro'
-                    }} />
+                    name="BookInterna"
+                    component={BookScreen}
+                    initialParams={{ abbrev: '', bookName: 'BookInterna' }}
+                    options={({ route }) => ({
+                        title: ` Favorite: ${route.params!.bookName}`
+                    })} />
+
                 <Stack.Screen
-                    name="Login"
-                    component={LoginScreen}
+                    name="MarkInterna"
+                    component={MarkScreen}
                     options={{
-                        title: 'Login',
+                        title: 'Marcações'
                     }} />
 
             </Stack.Navigator>

@@ -1,3 +1,5 @@
+import { IGrid } from "../interfaces/types"
+
 export const versiculosFake = [
     {
         id: '1',
@@ -46,3 +48,54 @@ export const versiculosFake = [
     },
 ]
 
+
+
+export const data: IGrid[] = [
+    {
+        id: 1,
+        colorBg: 'red'
+    },
+    {
+        id: 2,
+        colorBg: 'orange'
+    },
+    {
+        id: 3,
+        colorBg: 'yellow'
+    },
+    {
+        id: 4,
+        colorBg: 'green'
+    },
+    {
+        id: 5,
+        colorBg: 'lightblue'
+    },
+    {
+        id: 6,
+        colorBg: 'indigo'
+    }
+]
+
+export const capData = [
+    {
+        id: 1,
+        verseText: 'Teste',
+        verseInfo: '22: 5'
+    },
+    {
+        id: 2,
+        verseText: 'Teste',
+        verseInfo: '22: 5'
+    },
+    {
+        id: 3,
+        verseText: 'Teste',
+        verseInfo: '22: 5'
+    },
+    {
+        id: 4,
+        verseText: 'Teste',
+        verseInfo: '22: 5'
+    }
+]

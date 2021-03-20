@@ -1,61 +1,29 @@
 import React from 'react'
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
+import { SafeContainer, Container } from '../../../styles/globals';
+import { useTheme } from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
+import RenderRow from './components/RenderRow';
+import { GenericContainer, TitleSection, Title, CardMark } from './style';
+import GridItem from './components/GridItem';
+import { capData, data } from '../../../data/constants';
+import { getFavoriteBooks } from '../../../services/realm';
 import { useState } from '@hookstate/core';
-import { SafeContainer, Container, Card } from '../../../styles/globals';
-import styled, { useTheme } from 'styled-components/native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { updateMarkedState } from '../../../states/update';
+
 function FavoritosScreen() {
+    const { markColors, backgroundColor } = useTheme();
+    const navigation = useNavigation();
+    const [listBooks, setListBooks] = React.useState<Realm.Results<any>>();
+    const UpdateMarked = useState(updateMarkedState)
 
-    const { colorText, borderColor } = useTheme();
-    const data = [
-        {
-            id: 1,
-            colorBg: 'red'
-        },
-        {
-            id: 2,
-            colorBg: 'orange'
-        },
-        {
-            id: 3,
-            colorBg: 'yellow'
-        },
-        {
-            id: 4,
-            colorBg: 'green'
-        },
-        {
-            id: 5,
-            colorBg: 'lightblue'
-        },
-        {
-            id: 6,
-            colorBg: '#3F62F5'
+    React.useEffect(() => {
+        async function initData() {
+            const favoriteBooks = await getFavoriteBooks();
+            setListBooks(favoriteBooks);
         }
-    ]
-
-    const capData = [
-        {
-            id: 1,
-            verseText: 'Teste',
-            verseInfo: '22: 5'
-        },
-        {
-            id: 2,
-            verseText: 'Teste',
-            verseInfo: '22: 5'
-        },
-        {
-            id: 3,
-            verseText: 'Teste',
-            verseInfo: '22: 5'
-        },
-        {
-            id: 4,
-            verseText: 'Teste',
-            verseInfo: '22: 5'
-        }
-    ]
+        initData();
+    }, [])
 
     const RenderHeader = () => {
         return (
@@ -70,29 +38,15 @@ function FavoritosScreen() {
                     }}
                     numColumns={3}
                     data={data}
-                    renderItem={({ item }) => gridItem(item)}
+                    renderItem={({ item }) => <GridItem
+                        id={item.id}
+                        colorBg={item.colorBg}
+                        // @ts-ignore
+                        nextScreen={() => navigation.navigate('MarkInterna', { colorBg: markColors[100 * item.id] })} />}
                     keyExtractor={(item, index) => item.id.toString()}
                 />
                 <TitleSection>Veja os livros favoritados: </TitleSection>
             </GenericContainer>
-        )
-    }
-
-    const renderItem = (item: any) => {
-
-        return (
-            <CardBook key={item.id}>
-                <TitleBook>{item.verseText}</TitleBook>
-                <MaterialIcons name="keyboard-arrow-right" size={26} style={{ marginRight: 8 }} color='GradleDynamicVersion' />
-            </CardBook>
-        )
-    }
-
-
-    const gridItem = (item: any) => {
-
-        return (
-            <CardMark key={item.id} colorBg={item.colorBg} />
         )
     }
 
@@ -102,70 +56,22 @@ function FavoritosScreen() {
                 <Title>Favoritos e Marcados</Title>
                 <FlatList
                     ListHeaderComponent={() => <RenderHeader />}
-                    data={capData}
+                    data={listBooks}
                     ItemSeparatorComponent={() => <View style={{ marginBottom: 8 }} />}
-                    renderItem={({ item }) => renderItem(item)}
-                    keyExtractor={(item, index) => item.id.toString()}
-                />
+                    renderItem={({ item }) => <RenderRow
+                        bookName={item.name}
+                        nextScreen={() => navigation.navigate('BookInterna', { bookName: item.name, abbrev: item.abbrev })} />}
+                    keyExtractor={(item, index) => index.toString()} />
+
+                <Text style={{
+                    color: backgroundColor,
+                    fontSize: 1
+                }}>
+                    b: {UpdateMarked.get()}
+                </Text>
             </Container>
         </SafeContainer>
     )
 }
 
-
-export const GenericContainer = styled.View`
-  
-`;
-
-
-interface ICardMark {
-    colorBg: string;
-}
-
-export const CardBook = styled(Card)`
-    flex: 1; 
-    flex-direction: row; 
-    justify-content: space-between;
-`
-
-export const CardMark = styled(Card) <ICardMark>`
-    flex: 1;
-    flex-direction: row;
-    margin-right: 8px;
-    margin-bottom: 8px; 
-    background-color: ${({ colorBg }) => colorBg};
-`;
-
-export const Title = styled.Text`
-    font-size: 24px;
-    color: ${({ theme }) => theme.colorText};
-    text-align: center;
-    font-family: 'Roboto';
-    margin-top: 4px;
-`
-
-export const TitleBook = styled.Text`
-    font-size: 18px;
-    color: ${({ theme }) => theme.colorText};
-    font-family: 'Roboto-Light';
-`
-
-export const TitleSection = styled.Text`
-    font-size: 18px;
-    color: ${({ theme }) => theme.colorText};
-    font-family: 'Roboto-Light';
-    margin-top: 12px;
-    margin-bottom: 12px;
-    margin-left: 4px;
-`
-
-
-// const FavoritosCount = () => {
-//     const Favoritos = useState(FavoritosState);
-//     return (
-//         <Text style={{ color: 'white' }}>Numero de favoritos { Favoritos.get()} </Text>
-//     )
-// }
-
 export default FavoritosScreen
-
