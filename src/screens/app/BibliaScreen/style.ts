@@ -114,13 +114,19 @@ export const Title = styled.Text`
     padding: 8px 8px 4px 4px;
 `;
 
-export const SelectedVerse = styled.Text`
-    color: ${({ theme }) => theme.colorText};
+export const SelectedBg = styled.View<{ bgColor: string; }>`
+    color: ${({ theme, bgColor }) => bgColor ? 'white' : theme.colorText};
+    margin: 6px 0px;
+    border-radius: 6px;
+    background-Color: ${({ theme, bgColor }) => bgColor ? bgColor : theme.cardColor};
+`
+
+export const SelectedVerse = styled.Text<{ bgColor: string; }>`
+    color: ${({ theme, bgColor }) => bgColor ? 'white' : theme.colorText};
     font-size: ${getFontSize(18)};
     font-family: 'Roboto-Bold';
     padding: 8px 8px 4px 4px;
     text-align: center;
-    margin-bottom: 12px;
 `;
 
 export const TitleVerseInfo = styled.Text`

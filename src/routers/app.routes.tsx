@@ -15,6 +15,7 @@ import FavoritosScreen from '../screens/app/FavoritosScreen';
 import BookScreen from '../screens/app/FavoritosScreen/screens/BookScreen';
 import MarkScreen from '../screens/app/FavoritosScreen/screens/MarkScreen';
 import i18n from 'i18n-js';
+import SearchScreen from '../screens/app/SearchScreen';
 
 // Set the key-value pairs for the different languages you want to support.
 i18n.translations = {
@@ -25,6 +26,8 @@ i18n.translations = {
         TAB_MYBIBLE_TITLE: 'My Bible',
 
         STACK_MARKED_TITLE: 'Markings',
+
+        SEARCH_TITLE: 'Search',
 
 
         VERSE_TITLE: 'Verses for reflection',
@@ -40,8 +43,9 @@ i18n.translations = {
         SUBTILE_SECTION_MARKEDS: 'Choose a bookmark to see the marked verses:',
         SUBTILE_SECTION_BOOKS: 'See favorite books:',
 
-        NO_FOUNDS_BOOKS: 'No marked verses were found in this book!',
-        NO_FOUNDS_MARKEDS: 'No verses marked with this color were found!',
+        NO_FOUNDS_BOOKS: 'No marked verses were found in this book.',
+        NO_FOUNDS_BOOKS_FAV: 'No favorite books were found.',
+        NO_FOUNDS_MARKEDS: 'No verses marked with this color were found.',
 
         SETTINGS_GENERAL: 'General',
         SETTINGS_TERMS: 'Terms and conditions',
@@ -68,6 +72,7 @@ i18n.translations = {
         TAB_MYBIBLE_TITLE: 'Minha Bíblia',
 
         STACK_MARKED_TITLE: 'Marcações',
+        SEARCH_TITLE: 'Buscando',
 
         VERSE_TITLE: 'Versículos para reflexão',
         BOOK_TITLE: 'Favorito: ',
@@ -82,8 +87,9 @@ i18n.translations = {
         SUBTILE_SECTION_MARKEDS: 'Escolha um marcador para ver os versiculos marcados:',
         SUBTILE_SECTION_BOOKS: 'Veja os livros favoritados:',
 
-        NO_FOUNDS_BOOKS: 'Não foi encontrado versículos marcados neste livro!',
-        NO_FOUNDS_MARKEDS: 'Não foi encontrado versículos marcados com esta cor!',
+        NO_FOUNDS_BOOKS: 'Não foi encontrado versículos marcados neste livro.',
+        NO_FOUNDS_BOOKS_FAV: 'Não foi encontrado livros favoritados.',
+        NO_FOUNDS_MARKEDS: 'Não foi encontrado versículos marcados com esta cor.',
 
         SETTINGS_GENERAL: 'Geral',
         SETTINGS_TERMS: 'Termos e condições',
@@ -110,6 +116,7 @@ type RootStackParamList = {
     Tabs: undefined;
     MarkInterna: { colorBg: string; };
     BookInterna: { bookName: string; abbrev: string };
+    SearchScreen: undefined;
 };
 
 
@@ -208,6 +215,13 @@ function AppRoutes() {
                     component={MarkScreen}
                     options={{
                         title: i18n.t('STACK_MARKED_TITLE'),
+                    }} />
+
+                <Stack.Screen
+                    name="SearchScreen"
+                    component={SearchScreen}
+                    options={{
+                        title: i18n.t('SEARCH_TITLE'),
                     }} />
 
             </Stack.Navigator>

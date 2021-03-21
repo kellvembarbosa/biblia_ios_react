@@ -15,9 +15,7 @@ const VerseRow = ({ item, index, openSheet }: VerseProps & { openSheet: Function
                     {`${index + 1} `}
                 </NumberVerse>
                 <VerseText fontSize={18} scaling={settings.fontBibleSize()} colorBg={item.marked}>
-                    {
-                        item.verse
-                    }
+                    {item.verse}
                 </VerseText>
             </VerseText>
         </BibliaRowOnBible>

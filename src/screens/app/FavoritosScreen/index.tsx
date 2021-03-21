@@ -58,6 +58,12 @@ function FavoritosScreen() {
                 <FlatList
                     ListHeaderComponent={() => <RenderHeader />}
                     data={listBooks}
+                    ListEmptyComponent={() => <View>
+                        <Text style={{
+                            color: 'white',
+                            textAlign: 'center',
+                        }}>{i18n.t('NO_FOUNDS_BOOKS_FAV')}</Text>
+                    </View>}
                     ItemSeparatorComponent={() => <View style={{ marginBottom: 8 }} />}
                     renderItem={({ item }) => <RenderRow
                         bookName={item.name}

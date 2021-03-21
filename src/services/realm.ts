@@ -56,6 +56,18 @@ export const getVerseByIds = async (bookId: number, chapterId: number, verseId: 
     return { book, verse }
 }
 
+export const getSearchByKeyword = async (keywords: string) => {
+    const realm = await getRealm();
+    const filteredBooks = realm.objects(LIVRO_SCHEMA).filtered(`name LIKE '${keywords.toLowerCase()}' || abbrev LIKE '${keywords.toLowerCase()}' `);
+    const filteredVerses = realm.objects(VERSE_SCHEMA).filtered(`verse CONTAINS '${keywords.toLowerCase()}'`);
+    console.log('keywordsRealm', keywords);
+
+    return {
+        books: filteredBooks,
+        verses: filteredVerses
+    }
+}
+
 // export const getValue = async (key: string, defaultValue?: number) => {
 //     const realm = await getRealm();
 //     const firstValue = realm.objectForPrimaryKey(SETTING_SCHEMA, key)
