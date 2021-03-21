@@ -56,7 +56,7 @@ export const VerseSchema = {
 export const databaseOptions: Realm.Configuration = {
     schema: [BibleSchema, LivroSchema, ChapterSchema, VerseSchema],
     schemaVersion: 1,
-    path: 'bdbibliaa',
+    path: 'bdbibliaabaaaa',
     migration: (oldRealm: Realm, newRealm: Realm) => {
         console.log('migration: ', oldRealm.schemaVersion, ' new ', newRealm.schemaVersion)
     }

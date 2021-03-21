@@ -13,7 +13,7 @@ export const Actions = styled.View`
 
 export const ContainerBiblia = styled.View`
     flex: 1; 
-    padding: 8px 4px;
+    padding: 4px 0px;
 `;
 
 export const BibliaRow = styled.TouchableOpacity<{ bgColor?: string; }>`
@@ -21,8 +21,14 @@ export const BibliaRow = styled.TouchableOpacity<{ bgColor?: string; }>`
     border-radius: 4px;
     padding: 0px 6px;
     margin: 3px;
-    justify-content: center;
-    align-items: center;
+`
+
+
+export const BibliaRowOnBible = styled.TouchableOpacity<{ bgColor?: string; }>`
+    background-color: ${({ bgColor, theme }) => bgColor && bgColor.length > 0 ? bgColor : theme.backgroundColor};
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: 2px 0px;
 `
 
 export const ContainerSelectBook = styled.TouchableOpacity<ISelected & TouchableOpacityProps>`
@@ -51,7 +57,6 @@ export const SelectedButton = styled.TouchableOpacity<ISelectedButton & ViewProp
     flex: ${({ flex }) => flex ?? 1};
     background-color: ${({ theme }) => theme.cardColor};
     padding: 8px;
-    margin: 0 4px;
     border-radius: 4px;
     justify-content: ${({ justifyContent }) => justifyContent ?? 'center'};
     align-items: ${({ alignItems }) => alignItems ?? 'flex-start'};

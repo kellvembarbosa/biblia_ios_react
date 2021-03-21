@@ -123,18 +123,7 @@ function AppRoutes() {
     const BottomNav = () => (
         <Tab.Navigator
             tabBarOptions={theme.tabBarOptions}
-            initialRouteName="Home" >
-
-            <Tab.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{
-                    tabBarLabel: i18n.t('TAB_FEED_TITLE'),
-                    tabBarIcon: ({ color }) => (
-                        <FontAwesome name="list" size={22} color={color} />
-                    ),
-                }}
-            />
+            initialRouteName="Biblia" >
 
             <Tab.Screen
                 name="Biblia"
@@ -143,6 +132,17 @@ function AppRoutes() {
                     tabBarLabel: i18n.t('TAB_BIBLE_TITLE'),
                     tabBarIcon: ({ color }) => (
                         <MaterialIcons name="menu-book" size={25} color={color} />
+                    ),
+                }}
+            />
+
+            <Tab.Screen
+                name="Feed"
+                component={HomeScreen}
+                options={{
+                    tabBarLabel: i18n.t('TAB_FEED_TITLE'),
+                    tabBarIcon: ({ color }) => (
+                        <FontAwesome name="list" size={22} color={color} />
                     ),
                 }}
             />

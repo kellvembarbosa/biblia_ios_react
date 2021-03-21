@@ -3,47 +3,55 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import Routers from './routers';
 import { ThemeProvider } from "styled-components/native";
-import Parse from 'parse/react-native.js'
 import { useFonts } from 'expo-font';
 import { useMyTheme } from './states/theme';
 import { NativeModules, Platform } from 'react-native';
 import i18n from 'i18n-js';
 import { useSettings } from './states/setting';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { initializeParse } from '@parse/react-native';
+import { deviceLanguage, getRandomInt } from './utils/settings';
 
 
-const deviceLanguage =
-  Platform.OS === 'ios'
-    ? NativeModules.SettingsManager.settings.AppleLocale ||
-    NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
-    : NativeModules.I18nManager.localeIdentifier;
-
-i18n.locale = deviceLanguage;
+i18n.locale = deviceLanguage();
 i18n.fallbacks = true;
 
 //const AsyncStorage = require('react-native').AsyncStorage;
-Parse.setAsyncStorage(AsyncStorage);
-Parse.initialize('com.biblia', 'javascriptKeyKellvem');
-Parse.serverURL = 'https://parse.kellvem.pt/biblia';
+initializeParse(
+  'https://parse.kellvem.pt/biblia',
+  'com.biblia',
+  'javascriptKeyKellvem'
+);
 
 export default function App() {
 
   const currentTheme = useMyTheme();
   const settings = useSettings();
 
-
-
   React.useEffect(() => {
-    const createInstallation = async () => {
-      const Installation = Parse.Object.extend(new Parse.Installation);
-      const installation = new Installation();
-      installation.set('deviceType', Platform.OS);
-      installation.set('installationId', `${Date.now()}`);
-      await installation.save();
-    };
+    settings.updateInstallation();
+  })
 
-    createInstallation();
-  }, []);
+
+  // React.useEffect(() => {
+  //   const isFirstOpen = settings.isFirstOpen();
+  //   console.log('isFirstOpen', isFirstOpen);
+
+  //   if (isFirstOpen) {
+  //     const uuid = (Date.now() + getRandomInt(0, 100000)).toString();
+  //     const createInstallation = async () => {
+  //       const Installation = Parse.Object.extend(new Parse.Installation);
+  //       const installation = new Installation();
+
+  //       installation.set('deviceType', Platform.OS);
+  //       installation.set('installationId', uuid);
+  //       await installation.save();
+  //       settings.registerFirstOpen(uuid);
+  //     };
+
+  //     createInstallation();
+  //   }
+
+  // }, []);
 
   const [loaded] = useFonts({
     'Roboto': require('../assets/fonts/Roboto-Medium.ttf'),

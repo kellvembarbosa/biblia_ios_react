@@ -14,7 +14,7 @@ import { updateMarkedState } from '../../../states/update';
 import i18n from 'i18n-js';
 
 const MinhBibliaScreen = () => {
-    const { colorText, borderColor, backgroundColor, backgroundInput, isDarkTheme, cardColor } = useTheme();
+    const { colorText, borderColor, backgroundColor, isDarkTheme, cardColor } = useTheme();
     const setting = useSettings();
     const myTheme = useMyTheme();
     const UpdateMarked = useState(updateMarkedState)

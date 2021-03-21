@@ -1,6 +1,6 @@
 import realm from 'realm';
 import Realm from 'realm';
-import { databaseOptions, SETTING_SCHEMA, LIVRO_SCHEMA, VERSE_SCHEMA } from '../data/schema';
+import { databaseOptions, LIVRO_SCHEMA, VERSE_SCHEMA } from '../data/schema';
 
 export default function getRealm() {
     return Realm.open(databaseOptions);
@@ -44,6 +44,16 @@ export const clearAllMarked = async () => {
             verse.marked = '';
         })
     })
+}
+
+export const getVerseByIds = async (bookId: number, chapterId: number, verseId: number) => {
+    const realm = await getRealm();
+    const books = realm.objects(LIVRO_SCHEMA);
+    const book = books[bookId];
+
+    // @ts-ignore
+    const verse = books[bookId].chapters[chapterId].verses[verseId];
+    return { book, verse }
 }
 
 // export const getValue = async (key: string, defaultValue?: number) => {

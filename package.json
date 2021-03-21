@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@hookstate/core": "^3.0.6",
+    "@parse/react-native": "^0.0.1-alpha.14",
     "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
@@ -17,7 +18,6 @@
     "@react-navigation/stack": "^5.14.3",
     "@taccolaa/react-native-settings-screen": "https://github.com/kellvembarbosa/react-native-settings-screen.git",
     "expo": "~40.0.0",
-    "expo-blur": "~8.2.2",
     "expo-font": "~8.4.0",
     "expo-localization": "~9.1.0",
     "expo-secure-store": "~9.3.0",
