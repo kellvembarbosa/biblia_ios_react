@@ -8,6 +8,8 @@ import { useFonts } from 'expo-font';
 import { useMyTheme } from './states/theme';
 import { NativeModules, Platform } from 'react-native';
 import i18n from 'i18n-js';
+import { useSettings } from './states/setting';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const deviceLanguage =
@@ -19,7 +21,7 @@ const deviceLanguage =
 i18n.locale = deviceLanguage;
 i18n.fallbacks = true;
 
-const AsyncStorage = require('react-native').AsyncStorage;
+//const AsyncStorage = require('react-native').AsyncStorage;
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize('com.biblia', 'javascriptKeyKellvem');
 Parse.serverURL = 'https://parse.kellvem.pt/biblia';
@@ -27,6 +29,22 @@ Parse.serverURL = 'https://parse.kellvem.pt/biblia';
 export default function App() {
 
   const currentTheme = useMyTheme();
+  const settings = useSettings();
+
+
+
+  React.useEffect(() => {
+    const createInstallation = async () => {
+      const Installation = Parse.Object.extend(new Parse.Installation);
+      const installation = new Installation();
+      installation.set('deviceType', Platform.OS);
+      installation.set('installationId', `${Date.now()}`);
+      await installation.save();
+    };
+
+    createInstallation();
+  }, []);
+
   const [loaded] = useFonts({
     'Roboto': require('../assets/fonts/Roboto-Medium.ttf'),
     'Roboto-Light': require('../assets/fonts/Roboto-Light.ttf'),
