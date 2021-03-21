@@ -354,6 +354,7 @@ const BibliaScreen = () => {
                                         console.log('clicou em favoritos')
                                         await addBookFavorite(item)
                                         UpdateMarked.set(u => u + 1)
+                                        Parse.Analytics.track('favoritou', item);
                                     }}
                                     name={item.favorite === 1 ? "star" : "star-o"}
                                     size={24}

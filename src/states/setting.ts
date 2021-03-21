@@ -6,9 +6,10 @@ export interface SettingProps {
     fontBibleSize: number;
     fontHomeSize: number;
     notifications: boolean;
+    firstOpen: boolean;
 }
 
-const settingState = createState<SettingProps>({ fontBibleSize: 1, fontHomeSize: 1, notifications: true });
+const settingState = createState<SettingProps>({ fontBibleSize: 1, fontHomeSize: 1, notifications: true, firstOpen: false });
 
 const settingsPersistor = CreatePersistor({
     key: '@settings', // store name
@@ -17,30 +18,35 @@ const settingsPersistor = CreatePersistor({
 
 const settingHook = (s: State<SettingProps>) => ({
     fontBibleSize: () => s.value.fontBibleSize,
-
     upBibleSize: () => s.set(v => {
         return { ...v, fontBibleSize: v.fontBibleSize + 1 }
     }),
-
     downBibleSize: () => s.set(v => {
         return { ...v, fontBibleSize: v.fontBibleSize - 1 }
     }),
 
-    fontHomeSize: () => s.value.fontHomeSize,
 
+    fontHomeSize: () => s.value.fontHomeSize,
     upHomeSize: () => s.set(v => {
         return { ...v, fontHomeSize: v.fontHomeSize + 1 }
     }),
-
     downHomeSize: () => s.set(v => {
         return { ...v, fontHomeSize: v.fontHomeSize - 1 }
     }),
 
-    isNotifications: () => s.value.notifications,
 
+
+    isNotifications: () => s.value.notifications,
     toggleNotification: () => s.set(n => {
         return { ...n, notifications: !n.notifications }
     }),
+
+
+
+    isFirstOpen: () => s.value.firstOpen,
+    registerFirstOpen: () => s.set(f => {
+        return { ...f, firstOpen: true }
+    })
 })
 
 export const useSettings = () => settingHook(useState(settingState).attach(settingsPersistor));
