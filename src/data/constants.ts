@@ -1,5 +1,7 @@
 import { IGrid } from "../interfaces/types"
 
+export const linkShare = '';
+
 export const versiculosFake = [
     {
         id: '1',

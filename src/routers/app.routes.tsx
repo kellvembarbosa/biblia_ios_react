@@ -62,7 +62,8 @@ i18n.translations = {
         SETTINGS_TIPOGRAFIA: 'Typography',
         SETTINGS_FT_BIBLE: 'Bible page',
         SETTINGS_FT_HOME: 'Home page',
-        SETTINGS_FOOTER_RN: 'You can increase the apps fonts in school!'
+        SETTINGS_FOOTER_RN: 'You can increase the apps fonts in school!',
+        SETTINGS_VERSION_BIBLE: 'Change version'
 
     },
     pt: {
@@ -106,7 +107,9 @@ i18n.translations = {
         SETTINGS_TIPOGRAFIA: 'Tipografia',
         SETTINGS_FT_BIBLE: 'Página da bíblia',
         SETTINGS_FT_HOME: 'Página da inicial',
-        SETTINGS_FOOTER_RN: 'Você pode aumentar em escole as fontes do app!'
+        SETTINGS_FOOTER_RN: 'Você pode aumentar em escole as fontes do app!',
+
+        SETTINGS_VERSION_BIBLE: 'Alterar versão'
 
     },
 };

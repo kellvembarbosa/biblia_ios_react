@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage"
-import { Platform, NativeModules } from "react-native";
+import { Platform, NativeModules, Share } from "react-native";
 
 export const setInt = async (key: string, value: number) => {
     try {
@@ -64,3 +64,23 @@ export const deviceLanguage = () => {
 
     return deviceLanguage;
 }
+
+export const onShare = async (share: string, onSuccess?: Function) => {
+    try {
+        const result = await Share.share({
+            message: share,
+        });
+        if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+                // shared with activity type of result.activityType
+            } else {
+                // shared
+                if (onSuccess) onSuccess();
+            }
+        } else if (result.action === Share.dismissedAction) {
+            // dismissed
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+};

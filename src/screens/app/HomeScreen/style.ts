@@ -19,7 +19,7 @@ export const Actions = styled.View`
   align-items: center;
 `
 
-export const SocialCircle = styled.View<ISocialicons & ViewProps>`
+export const SocialCircle = styled.TouchableOpacity<ISocialicons & ViewProps & { onPress: () => void }>`
   justify-content: center;
   align-items: center;
   border-radius: 6px;

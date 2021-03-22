@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, Text, FlatList } from 'react-native'
-import { Card, Container, InputTextDefault, SafeContainer } from '../../../styles/globals'
+import { View, Text, FlatList, ActivityIndicator } from 'react-native'
+import { Card, Centered, Container, InputTextDefault, SafeContainer } from '../../../styles/globals'
 import getRealm, { getSearchByKeyword } from '../../../services/realm';
 import styled from 'styled-components/native';
 import { useBible } from '../../../states/bible';
 import { BIBLE_SCHEMA } from '../../../data/schema';
+import { useNavigation } from '@react-navigation/native';
 
 
 interface SearchProps {
@@ -14,6 +15,8 @@ interface SearchProps {
 const SearchScreen = () => {
     const [results, setResults] = React.useState<SearchProps>({} as SearchProps);
     const [searchKey, setSearchKey] = React.useState('');
+    const [loading, setLoading] = React.useState(false)
+    const navigation = useNavigation();
 
     const [bibliaObject, setBibliaObject] = React.useState<any>(null)
 
@@ -38,6 +41,7 @@ const SearchScreen = () => {
     }, [])
 
     React.useEffect(() => {
+        if (searchKey.length > 0) setLoading(true);
         async function searchFilter() {
             if (bibliaObject) {
                 // const result: SearchProps = await getSearchByKeyword(searchKey);
@@ -64,20 +68,22 @@ const SearchScreen = () => {
                     });
                 })
 
-                console.log(resultsFilter);
+                // console.log(resultsFilter);
                 setResults({ verses: resultsFilter });
+                setLoading(false)
             }
         }
+
         const timer = () => setTimeout(() => {
             searchFilter();
         }, 2000)
+
         const timerId = timer();
 
         return () => {
             clearTimeout(timerId);
         }
     }, [searchKey])
-
 
 
     return (
@@ -88,19 +94,33 @@ const SearchScreen = () => {
                     onChangeText={value => setSearchKey(value)}
                     placeholderTextColor="gray"
                     placeholder='O que deseja procurar?' />
+                {
+                    loading ?
+                        <Centered>
+                            <ActivityIndicator />
+                        </Centered>
+                        :
+                        <FlatList
+                            data={results.verses}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({ item, index }: { item: any, index: number }) => (
+                                <>
+                                    <Title style={{ marginBottom: 4 }}>Livro: {item.name}</Title>
 
-                <FlatList
-                    data={results.verses}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }: { item: any, index: number }) => (
-                        <>
-                            <Title style={{ marginBottom: 4 }}>Livro: {item.name}</Title>
+                                    <Card key={index} style={{ marginBottom: 8 }} onPress={() => {
+                                        setBookId(item.bookId);
+                                        setChapterId(item.chapterId);
+                                        console.log(item.verseId)
 
-                            <Card key={index} style={{ marginBottom: 8 }}>
-                                <Title>{item.verses.verse}</Title>
-                            </Card>
+                                        setVerseId(item.verseId);
+                                        navigation.goBack();
+                                    }}>
+                                        <Title>{item.verses.verse}</Title>
+                                    </Card>
 
-                        </>)} />
+                                </>)} />
+                }
+
             </Container>
         </SafeContainer>
     )

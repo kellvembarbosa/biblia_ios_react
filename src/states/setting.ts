@@ -13,7 +13,13 @@ export interface SettingProps {
     uuid: string;
 }
 // fontBibleSize: 1, fontHomeSize: 1, notifications: true, firstOpen: true, uuid: ''
-const initialState = PersistorWrapper({ fontBibleSize: 1, fontHomeSize: 1, notifications: true, firstOpen: true, uuid: '' } as SettingProps);
+const initialState = PersistorWrapper({
+    fontBibleSize: 1,
+    fontHomeSize: 1,
+    notifications: true,
+    firstOpen: true,
+    uuid: ''
+} as SettingProps);
 
 const settingState = createState<SettingProps>(initialState);
 
@@ -21,6 +27,7 @@ const settingsPersistor = CreatePersistor({
     key: '@setting', // store name
     engine: AsyncStorage, // storage engine which implements getItem & setItem
 });
+
 
 
 const settingHook = (s: State<SettingProps>) => ({

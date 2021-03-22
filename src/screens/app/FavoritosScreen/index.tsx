@@ -13,7 +13,7 @@ import { updateMarkedState } from '../../../states/update';
 import i18n from 'i18n-js';
 
 function FavoritosScreen() {
-    const { markColors, backgroundColor } = useTheme();
+    const { markColors, backgroundColor, colorText } = useTheme();
     const navigation = useNavigation();
     const [listBooks, setListBooks] = React.useState<Realm.Results<any>>();
     const UpdateMarked = useState(updateMarkedState)
@@ -60,7 +60,7 @@ function FavoritosScreen() {
                     data={listBooks}
                     ListEmptyComponent={() => <View>
                         <Text style={{
-                            color: 'white',
+                            color: colorText,
                             textAlign: 'center',
                         }}>{i18n.t('NO_FOUNDS_BOOKS_FAV')}</Text>
                     </View>}

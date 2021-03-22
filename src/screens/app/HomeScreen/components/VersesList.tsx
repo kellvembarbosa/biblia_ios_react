@@ -25,17 +25,11 @@ export default function VersesList() {
         }
     } = useTheme();
 
-    React.useEffect(() => {
-        console.log("HomeScreen")
-    }, [])
-
 
     const feed = Parse.Object.extend("Feed");
     const query = new Parse.Query(feed);
 
     const { results, isLoading } = useParseQuery(query, { enableLiveQuery: false });
-
-    const { fontHomeSize } = useSettings();
 
     if (isLoading) {
         return (

@@ -6,8 +6,10 @@ import { getItemsByColor } from '../../../../services/realm';
 import { Centered, Container, SafeContainer } from '../../../../styles/globals'
 import VerseRow from '../../BibliaScreen/components/VerseRow';
 import i18n from 'i18n-js';
+import { useTheme } from 'styled-components/native';
 
 function MarkScreen() {
+    const { colorText } = useTheme();
     const routes = useRoute();
     const [list, setList] = React.useState<IVerses[]>([])
     const [empty, setEmpty] = React.useState(false)
@@ -42,7 +44,7 @@ function MarkScreen() {
                     (
                         <Centered>
                             <Text style={{
-                                color: 'white',
+                                color: colorText,
                                 textAlign: 'center',
                             }}>{i18n.t('NO_FOUNDS_MARKEDS')}</Text>
                         </Centered>

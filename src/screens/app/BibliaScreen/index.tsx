@@ -40,7 +40,7 @@ import {
     FontAwesome,
     FontAwesome5
 } from '@expo/vector-icons';
-import { data } from '../../../data/constants';
+import { data, linkShare } from '../../../data/constants';
 import { CardMark } from '../FavoritosScreen/style';
 import { SocialCircle } from '../HomeScreen/style';
 import { useState } from '@hookstate/core';
@@ -48,10 +48,10 @@ import { updateMarkedState } from '../../../states/update';
 import i18n from 'i18n-js';
 import { useBible } from '../../../states/bible';
 import { useNavigation } from '@react-navigation/native';
+import { deviceLanguage, onShare } from '../../../utils/settings';
 
 const BibliaScreen = () => {
     const [bibliaObject, setBibliaObject] = React.useState<any>(null)
-
     const navigation = useNavigation();
 
     // const [BookId, setBookId] = React.useState(0)
@@ -65,7 +65,9 @@ const BibliaScreen = () => {
 
         bookId,
         chapterId,
-        verseId
+        verseId,
+        version,
+        lang
 
     } = useBible();
 
@@ -110,78 +112,70 @@ const BibliaScreen = () => {
 
             setSelected(item);
             // setSelected({ favorite: item.favorite, verse: item.verse, marked: item.marked });
-            actionSheetVerseInfoRef.current!.setModalVisible();
+            actionSheetVerseInfoRef?.current!.setModalVisible();
 
         }}
         key={index}
         item={item}
         index={index} />
 
+    async function initData() {
+        const realm = await getRealm();
+        const BibleDB = realm.objects(BIBLE_SCHEMA);
+        console.log('BibleDB.length', BibleDB.length)
+        if (BibleDB.length <= 0) {
+            const biblia = Parse.Object.extend("Biblia");
+            const query = new Parse.Query(biblia);
+            query.equalTo('lang', deviceLanguage().length > 0 ? deviceLanguage() : 'en')
+            query.equalTo('primary', true)
+            const response = await query.first();
+            if (response) {
+                try {
+                    const livro = response!.get('livro').map((item: any) => {
 
-    const biblia = Parse.Object.extend("Biblia");
-    const query = new Parse.Query(biblia);
-
-
-    useEffect(() => {
-        async function initData() {
-            const realm = await getRealm();
-            console.log('biblia_ios', realm.schemaVersion);
-
-            const BibleDB = realm.objects(BIBLE_SCHEMA);
-
-            if (BibleDB.length <= 0) {
-
-                // const { results, isLoading } = useParseQuery(query, { enableLiveQuery: false });
-
-                const response = await query.first();
-
-                console.log(response);
-                if (response) {
-                    try {
-                        // setBibliaObject(response);
-                        // convert o json para o formato do schema
-                        const livro = response!.get('livro').map((item: any) => {
-
-                            const chapters = item.chapters.map((verses: any) => {
-                                return { verses: verses.map((verse: any) => { return { verse } }) }
-                            })
-
-                            return {
-                                name: item.name,
-                                abbrev: item.abbrev,
-                                chapters
-                            };
+                        const chapters = item.chapters.map((verses: any) => {
+                            return { verses: verses.map((verse: any) => { return { verse } }) }
                         })
 
-                        // cria o objeto para ser inserido no banco de dados local
-                        // @ts-ignore
-                        const objectInsert = {
-                            objectId: response!.id,
-                            version: response!.get('version'),
-                            lang: response!.get('lang'),
-                            livro
-                        }
+                        return {
+                            name: item.name,
+                            abbrev: item.abbrev,
+                            chapters
+                        };
+                    })
 
-                        let inserted
-                        realm.write(() => {
-
-                            // adicionar função de limpar antes de inserir...
-                            // @ts-ignore
-                            inserted = realm.create(BIBLE_SCHEMA, objectInsert);
-                        });
-
-                        setBibliaObject(objectInsert)
-
-                        // setBook(bibliaObject.get('livro')[BookId].name)
-                    } catch (error) {
-                        console.log(error.messsage)
+                    // cria o objeto para ser inserido no banco de dados local
+                    // @ts-ignore
+                    const objectInsert = {
+                        objectId: response!.id,
+                        version: response!.get('version'),
+                        lang: response!.get('lang'),
+                        livro
                     }
+
+                    let inserted
+                    realm.write(() => {
+
+                        // adicionar função de limpar antes de inserir...
+                        // @ts-ignore
+                        inserted = realm.create(BIBLE_SCHEMA, objectInsert);
+                    });
+
+                    setBibliaObject(objectInsert)
+                    // bibliaObject.set(objectInsert);
+
+                    // setBook(bibliaObject('livro')[BookId].name)
+                } catch (error) {
+                    console.log(error.messsage)
                 }
-            } else {
-                setBibliaObject(BibleDB[0])
             }
+        } else {
+            setBibliaObject(BibleDB[0])
         }
-        initData()
+    }
+
+    useEffect(() => {
+        initData();
     }, [])
 
     let flatListRef: any
@@ -190,13 +184,13 @@ const BibliaScreen = () => {
 
     useEffect(() => {
         if (ShowModalChapter > 0) {
-            setTimeout(() => actionSheetChapterRef.current?.show(), 250)
+            setTimeout(() => actionSheetChapterRef?.current?.show(), 250)
         }
     }, [ShowModalChapter])
 
     useEffect(() => {
         if (ShowModalVerse > 0) {
-            setTimeout(() => actionSheetVersesRef.current?.show(), 250)
+            setTimeout(() => actionSheetVersesRef?.current?.show(), 250)
         }
     }, [ShowModalVerse])
 
@@ -251,7 +245,7 @@ const BibliaScreen = () => {
                 colorBg={cardColor}
                 style={{ justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
-                    // actionSheetVerseInfoRef.current!.hide();
+                    // actionSheetVerseInfoRef?.current!.hide();
                     // console.log('selected().item', selectedItem)
 
                     setMarkedColorVerse(selectedItem, color);
@@ -273,8 +267,16 @@ const BibliaScreen = () => {
         )
     }
 
-    // const show = () => setTimeout(() => actionSheetChapterRef.current?.show(), 100)
 
+    React.useEffect(() => {
+        setTimeout(() => {
+            console.log('verseId() useEffect', verseId())
+            if (flatListRef && bibliaObject) scrollToIndex(verseId());
+        }, 300)
+    }, [verseId])
+
+    // const show = () => setTimeout(() => actionSheetChapterRef?.current?.show(), 100)
+    // console.log('bibliaObject', bibliaObject)
     return (
         <SafeContainer>
             <Container>
@@ -286,7 +288,7 @@ const BibliaScreen = () => {
                     <>
                         <Actions>
                             <SelectedButton flex="8" onPress={() => {
-                                actionSheetBookRef.current?.setModalVisible();
+                                actionSheetBookRef?.current?.setModalVisible();
                             }}>
                                 <SelectedButtonText>
                                     {bibliaObject.livro && bibliaObject.livro[bookId()].name}
@@ -294,7 +296,7 @@ const BibliaScreen = () => {
                             </SelectedButton>
 
                             <SelectedButton alignItems="center" style={{ marginLeft: 6 }} onPress={() => {
-                                actionSheetChapterRef.current?.show();
+                                actionSheetChapterRef?.current?.show();
                             }}>
                                 <SelectedButtonText>
                                     {chapterId() + 1}
@@ -302,7 +304,7 @@ const BibliaScreen = () => {
                             </SelectedButton>
 
                             <SelectedButton alignItems="center" style={{ marginLeft: 6 }} onPress={() => {
-                                actionSheetVersesRef.current?.setModalVisible();
+                                actionSheetVersesRef?.current?.setModalVisible();
                             }}>
                                 <SelectedButtonText>{verseId() + 1}</SelectedButtonText>
                             </SelectedButton>
@@ -313,9 +315,6 @@ const BibliaScreen = () => {
                                 <IconLang name="search" color={colorText} />
                             </SelectedButton>
                         </Actions>
-                        {
-                            bibliaObject && console.log(`bible: ${bookId()} ${bibliaObject.toString()} ${chapterId()}`)
-                        }
                         <ContainerBiblia>
                             {
                                 bibliaObject.livro && <FlatList
@@ -386,7 +385,7 @@ const BibliaScreen = () => {
                                             setVerseId(0)
                                             setChapterId(0)
                                             setBookId(index)
-                                            actionSheetBookRef.current?.hide();
+                                            actionSheetBookRef?.current?.hide();
                                             setShowModalChapter(ShowModalChapter + 1)
                                             scrollToIndex(0);
                                         }}>
@@ -437,7 +436,7 @@ const BibliaScreen = () => {
                                                 setChapterId(index)
                                                 setVerseId(0)
                                                 scrollToIndex(0);
-                                                actionSheetChapterRef.current?.hide();
+                                                actionSheetChapterRef?.current?.hide();
                                                 setShowModalVerse(ShowModalVerse + 1)
                                             }}>
                                             <SelectButtonBook>
@@ -476,7 +475,7 @@ const BibliaScreen = () => {
                                         onPress={() => {
                                             setVerseId(index)
                                             scrollToIndex(index);
-                                            actionSheetVersesRef.current?.hide();
+                                            actionSheetVersesRef?.current?.hide();
                                         }}>
 
                                         <SelectButtonBook>
@@ -514,7 +513,7 @@ const BibliaScreen = () => {
                                         onPress={() => {
                                             setVerseId(index)
                                             scrollToIndex(index);
-                                            actionSheetVersesRef.current?.hide();
+                                            actionSheetVersesRef?.current?.hide();
                                         }}>
                                         <SelectButtonBook>
                                             {index + 1}
@@ -549,7 +548,7 @@ const BibliaScreen = () => {
                                         onPress={() => {
                                             setVerseId(index)
                                             scrollToIndex(index);
-                                            actionSheetVersesRef.current?.hide();
+                                            actionSheetVersesRef?.current?.hide();
                                         }}>
                                         <SelectButtonBook>
                                             {index + 1}
@@ -575,24 +574,36 @@ const BibliaScreen = () => {
 
                         <ContainerSheet showsVerticalScrollIndicator={false} height="auto">
 
-                            {Selected && bibliaObject && <SelectedBg bgColor={Selected.marked}><SelectedVerse bgColor={Selected.marked}> {Selected.verse} - {bibliaObject.livro[bookId()].name} {chapterId() + 1}:{verseId() + 1} </SelectedVerse></SelectedBg>}
+                            {Selected && bibliaObject && (<>
 
-                            <TitleVerseInfo>{i18n.t('ACTIONS_SHARE')}</TitleVerseInfo>
+                                <SelectedBg bgColor={Selected.marked}><SelectedVerse bgColor={Selected.marked}> {Selected.verse} - {bibliaObject.livro[bookId()].name} {chapterId() + 1}:{verseId() + 1} </SelectedVerse></SelectedBg>
 
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 6 }}>
-                                <SocialCircle color={colorTelegram}>
-                                    <FontAwesome name="telegram" size={18} color={colorIcons} />
-                                </SocialCircle>
-                                <SocialCircle color={colorWhatsApp}>
-                                    <FontAwesome name="whatsapp" size={18} color={colorIcons} />
-                                </SocialCircle>
-                                <SocialCircle color={colorFacebook}>
-                                    <FontAwesome name="facebook" size={18} color={colorIcons} />
-                                </SocialCircle>
-                                <SocialCircle color={colorInstagram}>
-                                    <FontAwesome name="instagram" size={18} color={colorIcons} />
-                                </SocialCircle>
-                            </View>
+                                <TitleVerseInfo>{i18n.t('ACTIONS_SHARE')}</TitleVerseInfo>
+
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 6 }}>
+                                    <SocialCircle color={colorTelegram} onPress={() => {
+                                        onShare(`${Selected.verse} - ${bibliaObject.livro[bookId()].name} ${chapterId() + 1}:${verseId() + 1} -> ${linkShare}`);
+                                    }}>
+                                        <FontAwesome name="telegram" size={18} color={colorIcons} />
+                                    </SocialCircle>
+                                    <SocialCircle color={colorWhatsApp} onPress={() => {
+                                        onShare(`${Selected.verse} - ${bibliaObject.livro[bookId()].name} ${chapterId() + 1}:${verseId() + 1} -> ${linkShare}`);
+                                    }}>
+                                        <FontAwesome name="whatsapp" size={18} color={colorIcons} />
+                                    </SocialCircle>
+                                    <SocialCircle color={colorFacebook} onPress={() => {
+                                        onShare(`${Selected.verse} - ${bibliaObject.livro[bookId()].name} ${chapterId() + 1}:${verseId() + 1} -> ${linkShare}`);
+                                    }}>
+                                        <FontAwesome name="facebook" size={18} color={colorIcons} />
+                                    </SocialCircle>
+                                    <SocialCircle color={colorInstagram} onPress={() => {
+                                        onShare(`${Selected.verse} - ${bibliaObject.livro[bookId()].name} ${chapterId() + 1}:${verseId() + 1} -> ${linkShare}`);
+                                    }}>
+                                        <FontAwesome name="instagram" size={18} color={colorIcons} />
+                                    </SocialCircle>
+                                </View>
+                            </>
+                            )}
 
                             <TitleVerseInfo>{i18n.t('ACTIONS_SELECT_VERSE')}</TitleVerseInfo>
 

@@ -1,6 +1,6 @@
 import realm from 'realm';
 import Realm from 'realm';
-import { databaseOptions, LIVRO_SCHEMA, VERSE_SCHEMA } from '../data/schema';
+import { BIBLE_SCHEMA, databaseOptions, LIVRO_SCHEMA, VERSE_SCHEMA } from '../data/schema';
 
 export default function getRealm() {
     return Realm.open(databaseOptions);
@@ -66,6 +66,19 @@ export const getSearchByKeyword = async (keywords: string) => {
         books: filteredBooks,
         verses: filteredVerses
     }
+}
+
+export const getBibleVersion = async () => {
+    const realm = await getRealm();
+    const bible: any = realm.objects(BIBLE_SCHEMA)[0];
+    return { version: bible.version, lang: bible.lang };
+}
+
+export const deleteAllDB = async () => {
+    const realm = await getRealm();
+    realm.write(() => {
+        realm.deleteAll();
+    })
 }
 
 // export const getValue = async (key: string, defaultValue?: number) => {
